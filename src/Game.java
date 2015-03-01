@@ -13,8 +13,6 @@ public class Game {
         Track[] tracks = new Track[4];
 
         for(int i = 0; i < 4; i++){
-            Random rand = new Random();
-
             cars[i] = new Car();
             tracks[i] = new Track();
         }
@@ -31,8 +29,14 @@ public class Game {
         }
     }
 
-    public void setCarStart(Track[] t){
-
+    public void setCarStart(Track[] t, Car[] c){
+        ArrayList<Integer> carStart = new ArrayList<Integer>();
+        for(int i = 0; i < 4; i++){
+            carStart.add(i);
+        }
+        for(int i = 0; i < 4; i++){
+            c[i].setLocation(t[i].getxLocation(), t[i].getyLocation());
+        }
     }
 
 
