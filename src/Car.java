@@ -9,16 +9,27 @@ public class Car {
                 totalTime,
                 engineSpeed,
                 carX,
-                carY;
+                carY,
+                moveSpeed;
     private Driver driver;
     private Track[] tracks;
-
 
     public Car(){
         time = 0;
         totalTime = 0;
+        engineSpeed = 0;
+        carX = 0;
+        carY = 0;
+        moveSpeed = 0;
+        driver = new Driver("");
+        tracks = null;
+    }
+
+    public Car(Driver driver){
+        time = 0;
+        totalTime = 0;
         tracks = new Track[4];
-        driver = new Driver("test");
+        this.driver = driver;
         carX = 0;
         carY = 0;
 
@@ -27,7 +38,14 @@ public class Car {
 
     public void makeEngine(){
         Random r = new Random();
-        this.setEngineSpeed(r.nextInt(100) + 100);
+        this.setEngineSpeed(r.nextInt(50) + 200);
+        moveSpeed = engineSpeed/10;
+
+    }
+
+    public void moveCar(){
+        carX += moveSpeed;
+        carY += moveSpeed;
     }
 
     public void setLocation(int x, int y){
@@ -35,8 +53,8 @@ public class Car {
         this.carY = y;
     }
 
-    public void addTotalTime(int n){
-        totalTime += time;
+    public Driver getDriver(){
+        return driver;
     }
 
     public void setTracks(Track[] t){
