@@ -11,6 +11,7 @@ public class Driver {
         this.name = name;
     }
 
+    //getters and setters
     public String getName(){
         return name;
     }
