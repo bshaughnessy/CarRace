@@ -20,7 +20,7 @@ public class Track
         this.yLocation = yLocation;
     }
 
-    //getters and setters
+    //getters and setters1
     public int getxLocation(){
         return xLocation;
     }

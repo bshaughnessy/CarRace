@@ -5,21 +5,25 @@ import java.util.Random;
  * Created by Tom on 2/25/2015.
  */
 public class Game {
+    private Car[] cars;
+    private Track[] tracks;
 
-    public static void main(String[] args){
-        Window w = new Window();
-
-        Car[] cars = new Car[4];
-        Track[] tracks = new Track[4];
+    public Game(){
+        cars = new Car[4];
+        tracks = new Track[4];
+        tracks[0] = new Track(10, 10);
+        tracks[1] = new Track(50, 10);
+        tracks[2] = new Track(50, 50);
+        tracks[3] = new Track(10, 50);
 
         for(int i = 0; i < 4; i++){
-            cars[i] = new Car();
-            tracks[i] = new Track();
+            cars[i] = new Car(new Driver("Driver" + i), tracks);
         }
-
         for(Car c : cars){
             c.setTracks(tracks);
         }
+
+        setCarStart(tracks, cars);
     }
 
     public void tallyTime(Car[] c){
@@ -38,6 +42,14 @@ public class Game {
         for(int i = 0; i < 4; i++){
             c[i].setLocation(t[i].getxLocation(), t[i].getyLocation());
         }
+    }
+
+    public Car[] getCars(){
+        return cars;
+    }
+
+    public Track[] getTracks(){
+        return tracks;
     }
 
 
