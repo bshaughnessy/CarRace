@@ -35,12 +35,16 @@ public class Game {
 
     //there is definitely a better way to do this
     public void setCarStart(Track[] t, Car[] c){
+        Random r = new Random();
         ArrayList<Integer> carStart = new ArrayList<Integer>();
         for(int i = 0; i < 4; i++){
             carStart.add(i);
         }
+        
         for(int i = 0; i < 4; i++){
-            c[i].setLocation(t[i].getxLocation(), t[i].getyLocation());
+            n = r.nextInt(carStart.size());
+            c[n].setLocation(t[n].getxLocation(), t[n].getyLocation());
+            carStart.get(n).remove();
         }
     }
 
