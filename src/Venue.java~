@@ -24,17 +24,8 @@ public class Venue
      * @param  x       the x-coordinate of the location
      * @param  y       the y-coordinate of the location
      */
-    public void addLocation(String name, String imgFile, int x, int y) {
-        locations.add(new Location(name, imgFile, x, y));
-    }
-    
-    /**
-     * Returns the arraylist of locations. 
-     * 
-     * @return    arraylist of locations
-     */
-    public ArrayList<Location> getLocations() {
-      return locations; 
+    public void addLocation(String name, int x, int y) {
+        locations.add(new Location(name, x, y));
     }
     
      /**

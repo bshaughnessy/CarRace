@@ -1,14 +1,23 @@
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by Tom on 2/25/2015.
  */
-public class Game {
+public class Game extends JPanel {
     private Car[] cars;
     private Track[] tracks;
+    private Venue venue; 
 
-    public Game(){
+    public Game(int xSize, int ySize) {
+        
+       setSize(xSize, ySize);
+      
+        // create venue
+        createVenue(); 
+        
         cars = new Car[4];
         tracks = new Track[4];
         tracks[0] = new Track(10, 10);
@@ -43,7 +52,31 @@ public class Game {
             c[i].setLocation(t[i].getxLocation(), t[i].getyLocation());
         }
     }
-
+    
+  /**
+   * Creates the venue and its locations. 
+   */
+    public void createVenue() {
+      venue = new Venue(); 
+      
+      int width = getWidth();
+      int height = getHeight(); 
+      
+      // add locations
+      // these coordinates, names and images should change-- just as placeholders
+      venue.addLocation("Location 1", "locationPlaceholder.png", 10, 10); 
+      venue.addLocation("Location 2", "locationPlaceholder.png", width - 50, 10); 
+      venue.addLocation("Location 3", "locationPlaceholder.png", 10, height - 50); 
+      venue.addLocation("Location 4", "locationPlaceholder.png", width - 50, height - 50); 
+      
+      // write text in correct spot according to coordinates
+      for (Location location : venue.getLocations()) {
+        if (location.getY() > height/2) {
+          location.setTextTop(true); 
+        }
+      }
+    }
+    
     public Car[] getCars(){
         return cars;
     }
@@ -51,6 +84,22 @@ public class Game {
     public Track[] getTracks(){
         return tracks;
     }
-
-
+    
+    /**
+     * Draws all components of the game: venue and cars.   
+     * 
+     * @param  g    Graphics object
+     */
+    @Override
+    public void paintComponent(Graphics g)
+    {    
+        super.paintComponent(g);
+        Graphics2D artist = (Graphics2D) g;
+        
+        // draw venue
+        venue.draw(artist); 
+        
+        // draws cars here
+        
+    }
 }

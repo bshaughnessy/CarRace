@@ -1,4 +1,7 @@
 import java.awt.*;
+import java.awt.image.BufferedImage; 
+import javax.imageio.ImageIO;
+import java.io.File;
 /**
  * Write a description of class Location here.
  * 
@@ -8,16 +11,54 @@ import java.awt.*;
 public class Location
 {
     private String name; 
+    private BufferedImage image; 
     private int x;
     private int y; 
+    private boolean textOnTop; 
 
     /**
      * Constructor for objects of class Location
      */
-    public Location(String name, int x, int y) {
+    public Location(String name, String imgFile, int x, int y) {
         this.name = name; 
         this.x = x;
         this.y = y; 
+        textOnTop = false; 
+        
+        // access image file
+        try { 
+            image = ImageIO.read(new File("../images/" + imgFile));
+        }
+        catch (Exception e) {
+            System.out.println("Image file not found");
+        } 
+    }
+    
+    /**
+     * Sets if the location string is written above or below the image.
+     * 
+     * @param  newLocation    true if the text should be on top, otherwise false
+     */
+    public void setTextTop(boolean newLocation) {
+      textOnTop = newLocation; 
+    }
+    
+    /**
+     * Returns the x-coordinate of the Location. 
+     * 
+     * @return    x-coordinate
+     */
+    public int getX() {
+      return x;
+    }
+    
+    /**
+     * Returns the y-coordinate of the Location. 
+     * 
+     * @param    y-coordinate
+     */
+    public int getY() {
+      return y; 
     }
     
     /**
@@ -27,13 +68,16 @@ public class Location
      */
     public void draw(Graphics2D g)
     {
-        // rectangle
-        g.setColor(Color.BLACK);
-        g.drawRect(x, y, 100, 100); 
-        g.fillRect(x, y, 100, 100);
+        // draw image
+        g.drawImage(image, null, x, y);
         
-        // string
-        g.setColor(Color.WHITE);
-        g.drawString(name, x + 5, y + 50);
+        g.setColor(Color.BLACK);
+        
+        // draw string
+        if (textOnTop) {
+          g.drawString(name, x, y - 5);
+        } else {
+          g.drawString(name, x, y + 60);
+        }
     }
 }
