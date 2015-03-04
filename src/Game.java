@@ -8,7 +8,7 @@ import java.awt.*;
  */
 public class Game extends JPanel {
     private Car[] cars;
-    private Track[] tracks;
+    private Car car; 
     private Venue venue; 
 
     public Game(int xSize, int ySize) {
@@ -18,21 +18,27 @@ public class Game extends JPanel {
         // create venue
         createVenue(); 
         
-        cars = new Car[4];
-        tracks = new Track[4];
-        tracks[0] = new Track(10, 10);
-        tracks[1] = new Track(50, 10);
-        tracks[2] = new Track(50, 50);
-        tracks[3] = new Track(10, 50);
+        //cars = new Car[4];
+        
+        Driver driver = new Driver("");
+        
+        /*cars[0] =*/ 
+        
+        car = new Car(driver, "yellowCar.png");
+        car.setLocation(50, 50);
+        
+        //car = new Car();
+        
+        
 
-        for(int i = 0; i < 4; i++){
-            cars[i] = new Car(new Driver("Driver" + i), tracks);
+        /*for(int i = 0; i < 4; i++){
+            cars[i] = new Car(new Driver("Driver" + i), venue);
         }
         for(Car c : cars){
             c.setTracks(tracks);
-        }
+        }*/
 
-        setCarStart(tracks, cars);
+        //setCarStart(tracks, cars);
     }
 
     public void tallyTime(Car[] c){
@@ -43,7 +49,7 @@ public class Game extends JPanel {
     }
 
     //there is definitely a better way to do this
-    public void setCarStart(Track[] t, Car[] c){
+    /*public void setCarStart(Track[] t, Car[] c){
         ArrayList<Integer> carStart = new ArrayList<Integer>();
         for(int i = 0; i < 4; i++){
             carStart.add(i);
@@ -51,7 +57,7 @@ public class Game extends JPanel {
         for(int i = 0; i < 4; i++){
             c[i].setLocation(t[i].getxLocation(), t[i].getyLocation());
         }
-    }
+    }*/
     
   /**
    * Creates the venue and its locations. 
@@ -81,9 +87,7 @@ public class Game extends JPanel {
         return cars;
     }
 
-    public Track[] getTracks(){
-        return tracks;
-    }
+    
     
     /**
      * Draws all components of the game: venue and cars.   
@@ -97,7 +101,15 @@ public class Game extends JPanel {
         Graphics2D artist = (Graphics2D) g;
         
         // draw venue
-        venue.draw(artist); 
+        venue.draw(artist);
+        
+        //cars[0].draw(artist); 
+        car.draw(artist); 
+        
+        //Car car = new Car(null, "yellowCar.png");
+        
+        /*/for () {
+        }*/
         
         // draws cars here
         
