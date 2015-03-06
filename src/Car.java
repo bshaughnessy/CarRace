@@ -25,64 +25,138 @@ public class Car {
                 engineSpeed,
                 carX,
                 carY,
-                moveSpeed;
+                moveSpeed,
+                currentLocation;
     private Driver driver;
-    private ArrayList<Location> locationList; 
-    
+    private Venue venue;
     private BufferedImage carImage;
-    private Rectangle rect; 
 
-    public Car(Driver driver, String carImageName) {
-      
-      rect = new Rectangle(50, 50, 25, 25);
-        
-         // access image file
-        try { 
-          System.out.println("Try successful");
-            //image = ImageIO.read(new File("../images/" + imgFile));
-          carImage = ImageIO.read(new File("../images/" + carImageName));
+    //constructor
+    public Car(Driver driver, String imgFile, Venue venue) {
+        //access image file
+        try {
+            carImage = ImageIO.read(new File("./images/" + imgFile));
         }
         catch (Exception e) {
             System.out.println("Car image file not found");
-        } 
-      
-        
+        }
+
         time = 0;
         totalTime = 0;
         carX = 0;
         carY = 0;
+        currentLocation = 0;
         this.driver = driver;
-        //locationList = list; 
+        this.venue = venue;
         
         makeEngine();
     }
 
+    //no arg constructor
     public Car() {
       driver = null; 
         time = 0;
         totalTime = 0;
-        //tracks = new Track[4];
-        this.driver = driver;
+        this.driver = null;
         carX = 0;
         carY = 0;
+        venue = null;
+        currentLocation = 0;
+    }
 
-        makeEngine();
+//    public void move(){
+//        if(this.getCarX() != venue.getLocations().get(currentLocation).getX()){
+//            if(this.getCarX() < venue.getLocations().get(currentLocation).getX())
+//            {
+//                this.setLocation(this.getCarX() + moveSpeed, getCarY());
+//            }
+//            else{
+//                this.setLocation(this.getCarX() - moveSpeed, getCarY());
+//            }
+//        }
+//        if(this.getCarY() != venue.getLocations().get(currentLocation).getY()){
+//            if(this.getCarY() < venue.getLocations().get(currentLocation).getY())
+//            {
+//                this.setLocation(this.getCarX(), this.getCarY() + moveSpeed);
+//            }
+//            else{
+//                this.setLocation(this.getCarX(), this.getCarY() - moveSpeed);
+//            }
+//        }
+//    }
+
+    public void move(){
+        printLocation();
+        int clX = venue.getLocations().get((currentLocation + 1) % 4).getX();
+        int clY = venue.getLocations().get((currentLocation + 1) % 4).getY();
+        int diff = 0;
+        switch(currentLocation){
+            case 0: diff = clX - carX;
+                if(diff != 0){
+                    carX += moveSpeed;
+                    diff -= moveSpeed;
+                }
+                else if(diff < moveSpeed && diff > 0){
+                    carX += diff;
+                }
+                break;
+            case 1: diff = clY - carY;
+                if(diff != 0){
+                    carY += moveSpeed;
+                    diff -= moveSpeed;
+                }
+                else if(diff < moveSpeed && diff > 0){
+                    carY += diff;
+                }
+                break;
+            case 2: diff = carX - clX;
+                if(diff != 0){
+                    carX -= moveSpeed;
+                    diff += moveSpeed;
+                }
+                else if(diff < moveSpeed && diff > 0){
+                    carX += diff;
+                }
+                break;
+            case 3: diff = carY - clY;
+                if(diff != 0){
+                    carY -= moveSpeed;
+                    diff += moveSpeed;
+                }
+                else if(diff < moveSpeed && diff > 0){
+                    carY += diff;
+                }
+                break;
+        }
+    }
+
+    public void draw(Graphics2D g2d){
+
+        g2d.drawImage(carImage, null, getCarX(), getCarY());
     }
 
     public void makeEngine(){
         Random r = new Random();
-        this.setEngineSpeed(r.nextInt(50) + 200);
-        moveSpeed = engineSpeed/10;
+        this.setEngineSpeed((r.nextInt(3)+1)*5);
+        moveSpeed = engineSpeed;
 
     }
 
-    public void moveCar(){
-        carX += moveSpeed;
-        carY += moveSpeed;
+    public int getCarX(){
+        return carX;
+    }
+
+    public int getCarY(){
+        return carY;
+    }
+
+    public int getMoveSpeed(){
+        return moveSpeed;
     }
 
     public void setLocation(int x, int y){
-     rect.setLocation(x, y);
+        this.carX = x;
+        this.carY = y;
     }
 
     public void printLocation(){
@@ -92,10 +166,6 @@ public class Car {
     public Driver getDriver(){
         return driver;
     }
-
-    //public void setTracks(Track[] t){
-        //this.tracks = t;
-    //}
 
     public int getCurrentTrack()
     {
@@ -117,32 +187,14 @@ public class Car {
     public void setEngineSpeed(int x){
         this.engineSpeed = x;
     }
-    
-    public void move()
-    {
-        Point p = rect.getLocation();
-        int t = getCurrentTrack();
-        //0 represents top left checkpoint
-        switch (t)  {
-            case 0: while(p.x < 740)
-                    p.x += 4;
-            case 1: while(p.y < 550)
-                    p.y += 4;
-            case 2: while(p.x > 50)
-                    p.x -= 4;
-            case 3: while(p.y > 50)
-                    p.y -= 4;
-        }
-    }
-     public void draw(Graphics2D g2d){
 
-       
-      Point p2 = rect.getLocation();
-      //don't really know if there is a better way to do this
-      AffineTransform a = new AffineTransform();
-      //and this
-      BufferedImageOp op = new AffineTransformOp(a, AffineTransformOp.TYPE_BILINEAR);
-      g2d.drawImage(carImage, op, (int)p2.getX(), (int)p2.getY());
-     }
-        
+    public int getCurrentLocation()
+    {
+        return currentLocation;
+    }
+
+    public void setCurrentLocation(int currentLocation)
+    {
+        this.currentLocation = currentLocation;
+    }
 }
