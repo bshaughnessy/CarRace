@@ -26,6 +26,7 @@ public class Car {
                 carX,
                 carY,
                 moveSpeed,
+                diff,
                 currentLocation;
     private Driver driver;
     private Venue venue;
@@ -45,6 +46,7 @@ public class Car {
         totalTime = 0;
         carX = 0;
         carY = 0;
+        diff = 0;
         currentLocation = 0;
         this.driver = driver;
         this.venue = venue;
@@ -86,45 +88,47 @@ public class Car {
 //    }
 
     public void move(){
-        printLocation();
         int clX = venue.getLocations().get((currentLocation + 1) % 4).getX();
         int clY = venue.getLocations().get((currentLocation + 1) % 4).getY();
-        int diff = 0;
         switch(currentLocation){
             case 0: diff = clX - carX;
-                if(diff != 0){
+                if(diff > moveSpeed){
                     carX += moveSpeed;
                     diff -= moveSpeed;
                 }
-                else if(diff < moveSpeed && diff > 0){
+                else if(diff <= moveSpeed && diff > 0){
                     carX += diff;
+                    //diff = 0;
                 }
                 break;
             case 1: diff = clY - carY;
-                if(diff != 0){
+                if(diff > moveSpeed){
                     carY += moveSpeed;
                     diff -= moveSpeed;
                 }
-                else if(diff < moveSpeed && diff > 0){
+                else if(diff <= moveSpeed && diff > 0){
                     carY += diff;
+                    //diff = 0;
                 }
                 break;
             case 2: diff = carX - clX;
-                if(diff != 0){
+                if(diff > moveSpeed){
                     carX -= moveSpeed;
-                    diff += moveSpeed;
+                    diff -= moveSpeed;
                 }
-                else if(diff < moveSpeed && diff > 0){
-                    carX += diff;
+                else if(diff <= moveSpeed && diff > 0){
+                    carX -= diff;
+                    //diff = 0;
                 }
                 break;
             case 3: diff = carY - clY;
-                if(diff != 0){
+                if(diff > moveSpeed){
                     carY -= moveSpeed;
-                    diff += moveSpeed;
+                    diff -= moveSpeed;
                 }
-                else if(diff < moveSpeed && diff > 0){
-                    carY += diff;
+                else if(diff <= moveSpeed && diff > 0){
+                    carY -= diff;
+                    //diff = 0;
                 }
                 break;
         }
@@ -137,9 +141,13 @@ public class Car {
 
     public void makeEngine(){
         Random r = new Random();
-        this.setEngineSpeed((r.nextInt(3)+1)*5);
+        this.setEngineSpeed(r.nextInt(10) + 10);
         moveSpeed = engineSpeed;
 
+    }
+
+    public String carDetails(){
+        return "x: " + carX + ", diff: " + diff + ", speed: " + moveSpeed;
     }
 
     public int getCarX(){

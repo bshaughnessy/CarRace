@@ -123,8 +123,11 @@ public class Game extends JPanel implements ActionListener
         if(b.equals(moveButton)){
             for(Car c : cars){
                 c.move();
+                System.out.println(c.carDetails());
                 repaint();
             }
+            System.out.println("==============================");
+
         }
 
         if(b.equals(nextLocButton)){
