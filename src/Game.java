@@ -35,7 +35,7 @@ public class Game extends JPanel implements ActionListener
         createVenue(); 
 
         //create 4 cars
-        cars = new Car[1];
+        cars = new Car[4];
         
         Driver driver = new Driver("Driver Name");
         
@@ -44,9 +44,9 @@ public class Game extends JPanel implements ActionListener
         racePressed = false; 
 
         cars[0] = new Car(driver, "yellowCar.png", venue.getLocations());
-        /*cars[1] = new Car(driver, "yellowCar.png", venue.getLocations());
+        cars[1] = new Car(driver, "yellowCar.png", venue.getLocations());
         cars[2] = new Car(driver, "yellowCar.png", venue.getLocations());
-        cars[3] = new Car(driver, "yellowCar.png", venue.getLocations());*/
+        cars[3] = new Car(driver, "yellowCar.png", venue.getLocations());
         
         timer = new Timer(250, this);
         timer.setActionCommand("timer");
