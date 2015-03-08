@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -19,7 +18,8 @@ import java.awt.Point;
 /**
  * Created by Tom on 2/25/15.
  */
-public class Car implements Runnable{
+public class Car{
+    //vars
     private int time,
                 totalTime,
                 engineSpeed,
@@ -31,9 +31,10 @@ public class Car implements Runnable{
     private Driver driver;
     private Venue venue;
     private BufferedImage carImage;
-    private boolean finished;
+    private boolean moving;
+    private Timer timer;
+    private Thread thread;
 
-    //constructor
     public Car(Driver driver, String imgFile, Venue venue) {
         //access image file
         try {
@@ -49,16 +50,17 @@ public class Car implements Runnable{
         carY = 0;
         diff = 0;
         currentLocation = 0;
-        finished = false;
+        moving = false;
         this.driver = driver;
         this.venue = venue;
+        timer = new Timer();
         
         makeEngine();
     }
 
     //no arg constructor
     public Car() {
-      driver = null; 
+        driver = null;
         time = 0;
         totalTime = 0;
         this.driver = null;
@@ -68,7 +70,24 @@ public class Car implements Runnable{
         currentLocation = 0;
     }
 
+    public void startTimer(){
+        timer.scheduleAtFixedRate(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                time++;
+                System.out.println(time);
+            }
+        }, new Date(), 1000);
+    }
+
+    public void stopTimer(){
+        timer.cancel();
+    }
+
     public void move(){
+        moving = true;
         int clX = venue.getLocations().get((currentLocation + 1) % 4).getX();
         int clY = venue.getLocations().get((currentLocation + 1) % 4).getY();
         switch(currentLocation){
@@ -79,7 +98,7 @@ public class Car implements Runnable{
                 }
                 else if(diff <= moveSpeed && diff > 0){
                     carX += diff;
-                    finished = true;
+                    moving = false;
                 }
                 break;
             case 1: diff = clY - carY;
@@ -89,7 +108,7 @@ public class Car implements Runnable{
                 }
                 else if(diff <= moveSpeed && diff > 0){
                     carY += diff;
-                    finished = true;
+                    moving = false;
                 }
                 break;
             case 2: diff = carX - clX;
@@ -99,7 +118,7 @@ public class Car implements Runnable{
                 }
                 else if(diff <= moveSpeed && diff > 0){
                     carX -= diff;
-                    finished = true;
+                    moving = false;
                 }
                 break;
             case 3: diff = carY - clY;
@@ -109,7 +128,7 @@ public class Car implements Runnable{
                 }
                 else if(diff <= moveSpeed && diff > 0){
                     carY -= diff;
-                    finished = true;
+                    moving = false;
                 }
                 break;
         }
@@ -131,24 +150,20 @@ public class Car implements Runnable{
         return "x: " + carX + ", diff: " + diff + ", speed: " + moveSpeed;
     }
 
-    public boolean getFinished(){
-        return finished;
+    public boolean getMoving(){
+        return this.moving;
     }
 
-    public void setFinished(boolean b){
-        this.finished = b;
+    public void setMoving(boolean b){
+        this.moving = b;
     }
-    
+
     public int getCarX(){
         return carX;
     }
 
     public int getCarY(){
         return carY;
-    }
-
-    public int getMoveSpeed(){
-        return moveSpeed;
     }
 
     public void setLocation(int x, int y){
@@ -195,9 +210,5 @@ public class Car implements Runnable{
         this.currentLocation = currentLocation;
     }
 
-    @Override
-    public void run()
-    {
-        //this is where the thread will start
-    }
+
 }

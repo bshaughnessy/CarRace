@@ -1,7 +1,5 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
@@ -14,7 +12,10 @@ public class Game extends JPanel implements ActionListener
 {
     private Car[] cars;
     private Venue venue;
-    private Timer t;
+
+    private boolean movePressed;
+
+    private Timer timer;
 
     private JButton moveButton,
                     nextLocButton;
@@ -30,7 +31,8 @@ public class Game extends JPanel implements ActionListener
         cars = new Car[4];
         
         Driver driver = new Driver("");
-        
+        movePressed = false;
+
 //        car = new Car(driver, "yellowCar.png", venue);
 //        car.setLocation(venue.getLocations().get(0).getX(), venue.getLocations().get(0).getY());
 
@@ -39,7 +41,9 @@ public class Game extends JPanel implements ActionListener
         cars[2] = new Car(driver, "yellowCar.png", venue);
         cars[3] = new Car(driver, "yellowCar.png", venue);
 
-        t = new Timer(5, null);
+        timer = new Timer(500, this);
+        timer.setActionCommand("timer");
+        timer.start();
 
         setCarStart();
 
@@ -113,27 +117,24 @@ public class Game extends JPanel implements ActionListener
         for(Car c : cars){
             c.draw(artist);
         }
-        //t.start();
         
     }
 
     public void actionPerformed(ActionEvent e){
-        JButton b = (JButton) e.getSource();
+        System.out.println(e.getActionCommand());
 
-        if(b.equals(moveButton)){
+        if(e.getActionCommand().equals("timer") && movePressed){
+            repaint();
             for(Car c : cars){
-                while(!c.getFinished())
-                {
-                    c.move();
-                    System.out.println(c.carDetails());
-                    repaint();
-                }
+                c.move();
             }
-            System.out.println("==============================");
-
         }
 
-        if(b.equals(nextLocButton)){
+        if(e.getActionCommand().equals("Move")){
+            movePressed = true;
+        }
+
+        if(e.getActionCommand().equals("Next Location")){
 
             setNextLoc();
             for(Car c : cars){
