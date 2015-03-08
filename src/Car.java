@@ -173,12 +173,6 @@ public class Car {
  */
     public void move() {
       // delta x
-      //int deltaX = locations.get(getNextLocation()).getX() - locations.get(currentLocation).getX(); 
-      
-      // delta y
-      //int deltaY = locations.get(getNextLocation()).getY() - locations.get(currentLocation).getY(); 
-      
-      // delta x
       int deltaX = locations.get(getNextLocation()).getX() - carX; 
       
       // delta y
@@ -235,12 +229,16 @@ public class Car {
  * 
  */
     public boolean atLocation() {
-      System.out.println("distance: " + getDistance());
       return getDistance() < 20;
     }
     
     public void resetLocation() {
+      System.out.println("before current: " + currentLocation);
+      System.out.println("before next: " + getNextLocation());
       currentLocation = getNextLocation(); 
+      System.out.println("after current: " + currentLocation);
+      System.out.println("after next: " + getNextLocation());
+      
     }
 
     public String carDetails(){

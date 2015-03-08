@@ -18,9 +18,13 @@ public class Game extends JPanel implements ActionListener
     private Timer t;
 
     private JButton moveButton,
-                    nextLocButton;
+                    nextLocButton,
+                    raceButton;
     
-    private boolean movePressed, nextPressed;
+    private boolean movePressed, 
+                    nextPressed,
+                    racePressed;
+    
     private Timer timer;
 
     public Game(int xSize, int ySize) {
@@ -31,17 +35,18 @@ public class Game extends JPanel implements ActionListener
         createVenue(); 
 
         //create 4 cars
-        cars = new Car[4];
+        cars = new Car[1];
         
         Driver driver = new Driver("Driver Name");
         
         movePressed = false;
         nextPressed = false; 
+        racePressed = false; 
 
         cars[0] = new Car(driver, "yellowCar.png", venue.getLocations());
-        cars[1] = new Car(driver, "yellowCar.png", venue.getLocations());
+        /*cars[1] = new Car(driver, "yellowCar.png", venue.getLocations());
         cars[2] = new Car(driver, "yellowCar.png", venue.getLocations());
-        cars[3] = new Car(driver, "yellowCar.png", venue.getLocations());
+        cars[3] = new Car(driver, "yellowCar.png", venue.getLocations());*/
         
         timer = new Timer(500, this);
         timer.setActionCommand("timer");
@@ -51,12 +56,15 @@ public class Game extends JPanel implements ActionListener
 
         moveButton = new JButton("Move");
         nextLocButton = new JButton("Next Location");
+        raceButton = new JButton("Full Race");
 
         moveButton.addActionListener(this);
         nextLocButton.addActionListener(this);
+        raceButton.addActionListener(this); 
 
         this.add(moveButton);
         this.add(nextLocButton);
+        this.add(raceButton);
 
     }
 
@@ -129,59 +137,12 @@ public class Game extends JPanel implements ActionListener
     
 /**
  * Causes all cars to move around the track until they have all reached their starting postions again. 
- */
+ */    
     public void race() {
-      
-      int carsDone = 0;
-
-      // while cars still racing
-      while (carsDone < cars.length) {
-        
-          // pause between movements
-          try {
-            Thread.sleep(150); 
-          } catch (Exception ex) {
-                   //System.out.println("cannot sleep");
-          }
-         
-          // for every car
-          for(Car c : cars) {
-            
-            // if haven't finished race
-            if (c.finishedRace() == false)
-            {
-              // move towards next
-              if (!c.atLocation()) {
-                c.move();
-              }
-              // otherwise reset next location
-              else {
-                c.resetLocation(); 
-                
-                // back at starting location
-                if (c.getCurrentLocation() == c.getStartLocation()) {
-                  c.setFinishedRace(true);
-                  carsDone++; 
-                }
-              }
-            }
-            repaint(); 
-          }
-       }
-    }
-    
-    public void raceTwo() {
       int carsDone = 0;
 
       // while cars still racing
       if (carsDone < cars.length) {
-        
-          // pause between movements
-          /*try {
-            Thread.sleep(150); 
-          } catch (Exception ex) {
-                   //System.out.println("cannot sleep");
-          }*/
          
           // for every car
           for (Car c : cars) {
@@ -207,18 +168,38 @@ public class Game extends JPanel implements ActionListener
             repaint(); 
           }
        }
-      
+    }
+    
+    public void moveOneLeg() {
+        for (Car c : cars) {
+          // if haven't gotten to next location yet
+          if (!c.atLocation()) {
+            c.move();
+          }
+        }
+    }
+    
+    // still issues with this-- continuously resets 
+    public void setNextLocations() {
+      for (Car c : cars) {
+        c.resetLocation(); 
+      }
     }
 
-
-    public void actionPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e) {
         System.out.println(e.getActionCommand());
 
         if(e.getActionCommand().equals("timer") && movePressed) {
             repaint();
-            for(Car c : cars) {
-                c.move();
-            }
+            moveOneLeg(); 
+        }
+        
+        if(e.getActionCommand().equals("timer") && nextPressed) {
+            setNextLocations(); 
+        }
+        
+        if(e.getActionCommand().equals("timer") && racePressed) {
+            race(); 
         }
 
         if(e.getActionCommand().equals("Move")) {
@@ -228,9 +209,9 @@ public class Game extends JPanel implements ActionListener
         if(e.getActionCommand().equals("Next Location")) {
             nextPressed = true;
         }
-
-        if(e.getActionCommand().equals("timer") && nextPressed) {
-            raceTwo(); 
+        
+        if (e.getActionCommand().equals("Full Race")) {
+            racePressed = true; 
         }
     }
 }
