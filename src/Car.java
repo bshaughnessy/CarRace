@@ -24,7 +24,6 @@ import java.util.*;
 public class Car {
     private int time,
                 totalTime,
-                engineSpeed,
                 carX,
                 carY,
                 moveSpeed,
@@ -39,17 +38,16 @@ public class Car {
     // tom
     private boolean moving;
     private Timer timer;
-    private Thread thread;
 
-/**
- * Constructor for objects of type Car. 
- */
+    /**
+     * Constructor for objects of type Car.
+     */
     public Car(Driver driver, String imgFile, ArrayList<Location> locations) {
       
       
         //access image file
         try {
-            carImage = ImageIO.read(new File("../images/" + imgFile));
+            carImage = ImageIO.read(new File("./images/yellowCar.png"));
         }
         catch (Exception e) {
             System.out.println("Car image file not found");
@@ -69,9 +67,9 @@ public class Car {
         makeEngine();
     }
 
-/**
- * No arg constructor for objects of type car. 
- */
+    /**
+     * No arg constructor for objects of type car.
+     */
     public Car() {
         driver = null; 
         time = 0;
@@ -99,78 +97,10 @@ public class Car {
     public void stopTimer(){
         timer.cancel();
     }
-
-//    public void move(){
-//        if(this.getCarX() != venue.getLocations().get(currentLocation).getX()){
-//            if(this.getCarX() < venue.getLocations().get(currentLocation).getX())
-//            {
-//                this.setLocation(this.getCarX() + moveSpeed, getCarY());
-//            }
-//            else{
-//                this.setLocation(this.getCarX() - moveSpeed, getCarY());
-//            }
-//        }
-//        if(this.getCarY() != venue.getLocations().get(currentLocation).getY()){
-//            if(this.getCarY() < venue.getLocations().get(currentLocation).getY())
-//            {
-//                this.setLocation(this.getCarX(), this.getCarY() + moveSpeed);
-//            }
-//            else{
-//                this.setLocation(this.getCarX(), this.getCarY() - moveSpeed);
-//            }
-//        }
-//    }
-
-    /*public void move(){
-        int clX = locations.get((currentLocation + 1) % 4).getX();
-        int clY = locations.get((currentLocation + 1) % 4).getY();
-        switch(currentLocation){
-            case 0: diff = clX - carX;
-                if (diff > moveSpeed) {
-                    carX += moveSpeed;
-                    diff -= moveSpeed;
-                }
-                else if (diff <= moveSpeed && diff > 0) {
-                    carX += diff;
-                    //diff = 0;
-                }
-                break;
-            case 1: diff = clY - carY;
-                if(diff > moveSpeed){
-                    carY += moveSpeed;
-                    diff -= moveSpeed;
-                }
-                else if (diff <= moveSpeed && diff > 0) {
-                    carY += diff;
-                    //diff = 0;
-                }
-                break;
-            case 2: diff = carX - clX;
-                if (diff > moveSpeed) {
-                    carX -= moveSpeed;
-                    diff -= moveSpeed;
-                }
-                else if (diff <= moveSpeed && diff > 0) {
-                    carX -= diff;
-                    //diff = 0;
-                }
-                break;
-            case 3: diff = carY - clY;
-                if (diff > moveSpeed) {
-                    carY -= moveSpeed;
-                    diff -= moveSpeed;
-                }
-                else if (diff <= moveSpeed && diff > 0) {
-                    carY -= diff;
-                    //diff = 0;
-                }
-                break;
-        }
-    }*/
     
-/**
- * Moves the car to the next location in their route. 
- */
+    /**
+     * Moves the car to the next location in their route.
+     */
     public void move() {
       // delta x
       int deltaX = locations.get(getNextLocation()).getX() - carX; 
@@ -191,10 +121,10 @@ public class Car {
       carX += velocityX; 
       carY += velocityY; 
     }
-    
-/**
- * Gets the distance between the car's current postion and the next location's coordinates. 
- */
+
+    /**
+     * Gets the distance between the car's current postion and the next location's coordinates.
+     */
     public double getDistance() {
       // delta x
       int deltaX = locations.get(getNextLocation()).getX() - carX; 
@@ -208,9 +138,9 @@ public class Car {
       return distance; 
     }
     
-/**
- * Gets the next Location that the car will travel to. 
- */
+    /**
+     * Gets the next Location that the car will travel to.
+     */
     public int getNextLocation() {
       return (currentLocation + 1) % locations.size(); 
     }
@@ -221,13 +151,9 @@ public class Car {
 
     public void makeEngine() {
         Random r = new Random();
-        this.setEngineSpeed(r.nextInt(10) + 10);
-        moveSpeed = engineSpeed;
+        moveSpeed = r.nextInt(10) + 10;
     }
-    
-/**
- * 
- */
+
     public boolean atLocation() {
       return getDistance() < 20;
     }
@@ -241,10 +167,9 @@ public class Car {
       
     }
 
-    public String carDetails(){
-        return "x: " + carX + ", y: " + carY + ", diff: " + diff + ", speed: " + moveSpeed;
-    }
-
+    /**
+     * Getters and Setters
+     */
     public int getCarX(){
         return carX;
     }
@@ -260,10 +185,6 @@ public class Car {
     public void setLocation(int x, int y){
         carX = x;
         carY = y;
-    }
-
-    public void printLocation(){
-        System.out.println(driver.getName() + " x: " + this.carX + "y: " + this.carY);
     }
     
     public Driver getDriver(){
@@ -287,18 +208,9 @@ public class Car {
         this.time = time;
     }
 
-    public void setEngineSpeed(int x){
-        this.engineSpeed = x;
-    }
-
     public int getCurrentLocation()
     {
         return currentLocation;
-    }
-
-    public void setCurrentLocation(int currentLocation)
-    {
-        this.currentLocation = currentLocation;
     }
     
     public void setStartLocation(int startLocation) {

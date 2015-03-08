@@ -1,12 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.Random;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 /**
  * Created by Tom on 2/25/2015.
@@ -15,7 +10,6 @@ public class Game extends JPanel implements ActionListener
 {
     private Car[] cars;
     private Venue venue;
-    private Timer t;
 
     private JButton moveButton,
                     nextLocButton,
@@ -35,18 +29,20 @@ public class Game extends JPanel implements ActionListener
         createVenue(); 
 
         //create 4 cars
-        cars = new Car[1];
-        
+        cars = new Car[4];
+
+        //TODO: this needs to adjusted and done in the main with the user input
         Driver driver = new Driver("Driver Name");
         
         movePressed = false;
         nextPressed = false; 
         racePressed = false; 
 
-        cars[0] = new Car(driver, "yellowCar.png", venue.getLocations());
-        /*cars[1] = new Car(driver, "yellowCar.png", venue.getLocations());
+        //TODO: this should be set by the main class and the user input
+        cars[0] = new Car(driver, "./images/yellowCar.png", venue.getLocations());
+        cars[1] = new Car(driver, "yellowCar.png", venue.getLocations());
         cars[2] = new Car(driver, "yellowCar.png", venue.getLocations());
-        cars[3] = new Car(driver, "yellowCar.png", venue.getLocations());*/
+        cars[3] = new Car(driver, "yellowCar.png", venue.getLocations());
         
         timer = new Timer(500, this);
         timer.setActionCommand("timer");
@@ -68,26 +64,18 @@ public class Game extends JPanel implements ActionListener
 
     }
 
-/**
- * Sets every car to a different starting position.  
- */
+    /**
+     * Sets every car to a different starting position.
+     */
     public void setCarStart(){
         for(int i = 0; i < cars.length; i++) {
             cars[i].setStartLocation(i);
-            //cars[i].setLocation(venue.getLocations().get(i).getX(), venue.getLocations().get(i).getY());
-            
-        }
-    }
-
-    public void setNextLoc(){
-        for(Car c : cars){
-            c.setCurrentLocation((c.getCurrentLocation() + 1) % 4);
         }
     }
     
-  /**
-   * Creates the venue and its locations. 
-   */
+    /**
+    * Creates the venue and its locations.
+    */
     public void createVenue() {
       venue = new Venue(); 
       
@@ -96,10 +84,10 @@ public class Game extends JPanel implements ActionListener
       
       // add locations
       // these coordinates, names and images should change-- just as placeholders
-      venue.addLocation("Location 1", "locationPlaceholder.png", 10, 200); 
-      venue.addLocation("Location 2", "locationPlaceholder.png", width - 50, 10); 
-      venue.addLocation("Location 3", "locationPlaceholder.png", width - 50, height - 50);
-      venue.addLocation("Location 4", "locationPlaceholder.png", 10, height - 50);
+      venue.addLocation("Location 1", "./images/locationPlaceholder.png", 10, 200);
+      venue.addLocation("Location 2", "./images/locationPlaceholder.png", width - 50, 10);
+      venue.addLocation("Location 3", "./images/locationPlaceholder.png", width - 50, height - 50);
+      venue.addLocation("Location 4", "./images/locationPlaceholder.png", 10, height - 50);
       
       // write text in correct spot according to coordinates
       for (Location location : venue.getLocations()) {
@@ -107,10 +95,6 @@ public class Game extends JPanel implements ActionListener
           location.setTextTop(true); 
         }
       }
-    }
-    
-    public Car[] getCars(){
-        return cars;
     }
 
     /**
@@ -131,8 +115,6 @@ public class Game extends JPanel implements ActionListener
         for (Car c : cars) {
             c.draw(artist);
         }
-
-        //t.start();
     }
     
 /**
@@ -169,17 +151,24 @@ public class Game extends JPanel implements ActionListener
           }
        }
     }
-    
+
+    /**
+     * Moves the car to its next location then stops upon arrival
+     */
     public void moveOneLeg() {
-        for (Car c : cars) {
-          // if haven't gotten to next location yet
-          if (!c.atLocation()) {
-            c.move();
-          }
+        for (Car c : cars)
+        {
+            // if haven't gotten to next location yet
+            if (!c.atLocation())
+            {
+                c.move();
+            }
         }
     }
-    
-    // still issues with this-- continuously resets 
+
+    /**
+     * Sets the next locations for the cars
+     */
     public void setNextLocations() {
       for (Car c : cars) {
         c.resetLocation(); 
@@ -195,7 +184,8 @@ public class Game extends JPanel implements ActionListener
         }
         
         if(e.getActionCommand().equals("timer") && nextPressed) {
-            setNextLocations(); 
+            setNextLocations();
+            nextPressed = false;
         }
         
         if(e.getActionCommand().equals("timer") && racePressed) {
@@ -213,5 +203,12 @@ public class Game extends JPanel implements ActionListener
         if (e.getActionCommand().equals("Full Race")) {
             racePressed = true; 
         }
+    }
+
+    /**
+     * Getters and Setters
+     */
+    public Car[] getCars(){
+        return cars;
     }
 }

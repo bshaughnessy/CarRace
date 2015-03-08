@@ -27,7 +27,7 @@ public class Location
         
         // access image file
         try { 
-            image = ImageIO.read(new File("../images/locationPlaceholder.png"));
+            image = ImageIO.read(new File("./images/locationPlaceholder.png"));
         }
         catch (Exception e) {
             System.out.println("Image file not found");
