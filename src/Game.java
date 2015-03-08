@@ -44,7 +44,7 @@ public class Game extends JPanel implements ActionListener
         cars[2] = new Car(driver, "yellowCar.png", venue.getLocations());
         cars[3] = new Car(driver, "yellowCar.png", venue.getLocations());
         
-        timer = new Timer(500, this);
+        timer = new Timer(250, this);
         timer.setActionCommand("timer");
         timer.start();
 
@@ -117,9 +117,9 @@ public class Game extends JPanel implements ActionListener
         }
     }
     
-/**
- * Causes all cars to move around the track until they have all reached their starting postions again. 
- */    
+    /**
+     * Causes all cars to move around the track until they have all reached their starting postions again.
+     */
     public void race() {
       int carsDone = 0;
 
@@ -180,7 +180,7 @@ public class Game extends JPanel implements ActionListener
 
         if(e.getActionCommand().equals("timer") && movePressed) {
             repaint();
-            moveOneLeg(); 
+            moveOneLeg();
         }
         
         if(e.getActionCommand().equals("timer") && nextPressed) {
