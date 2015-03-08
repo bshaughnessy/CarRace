@@ -48,7 +48,7 @@ public class Game extends JPanel implements ActionListener
         cars[2] = new Car(driver, "yellowCar.png", venue.getLocations());
         cars[3] = new Car(driver, "yellowCar.png", venue.getLocations());*/
         
-        timer = new Timer(500, this);
+        timer = new Timer(250, this);
         timer.setActionCommand("timer");
         timer.start();
 
@@ -191,11 +191,12 @@ public class Game extends JPanel implements ActionListener
 
         if(e.getActionCommand().equals("timer") && movePressed) {
             repaint();
-            moveOneLeg(); 
+            moveOneLeg();
         }
         
         if(e.getActionCommand().equals("timer") && nextPressed) {
             setNextLocations(); 
+            nextPressed = false; 
         }
         
         if(e.getActionCommand().equals("timer") && racePressed) {
