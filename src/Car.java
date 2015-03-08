@@ -19,7 +19,7 @@ import java.awt.Point;
 /**
  * Created by Tom on 2/25/15.
  */
-public class Car {
+public class Car implements Runnable{
     private int time,
                 totalTime,
                 engineSpeed,
@@ -31,6 +31,7 @@ public class Car {
     private Driver driver;
     private Venue venue;
     private BufferedImage carImage;
+    private boolean finished;
 
     //constructor
     public Car(Driver driver, String imgFile, Venue venue) {
@@ -48,6 +49,7 @@ public class Car {
         carY = 0;
         diff = 0;
         currentLocation = 0;
+        finished = false;
         this.driver = driver;
         this.venue = venue;
         
@@ -66,27 +68,6 @@ public class Car {
         currentLocation = 0;
     }
 
-//    public void move(){
-//        if(this.getCarX() != venue.getLocations().get(currentLocation).getX()){
-//            if(this.getCarX() < venue.getLocations().get(currentLocation).getX())
-//            {
-//                this.setLocation(this.getCarX() + moveSpeed, getCarY());
-//            }
-//            else{
-//                this.setLocation(this.getCarX() - moveSpeed, getCarY());
-//            }
-//        }
-//        if(this.getCarY() != venue.getLocations().get(currentLocation).getY()){
-//            if(this.getCarY() < venue.getLocations().get(currentLocation).getY())
-//            {
-//                this.setLocation(this.getCarX(), this.getCarY() + moveSpeed);
-//            }
-//            else{
-//                this.setLocation(this.getCarX(), this.getCarY() - moveSpeed);
-//            }
-//        }
-//    }
-
     public void move(){
         int clX = venue.getLocations().get((currentLocation + 1) % 4).getX();
         int clY = venue.getLocations().get((currentLocation + 1) % 4).getY();
@@ -98,7 +79,7 @@ public class Car {
                 }
                 else if(diff <= moveSpeed && diff > 0){
                     carX += diff;
-                    //diff = 0;
+                    finished = true;
                 }
                 break;
             case 1: diff = clY - carY;
@@ -108,7 +89,7 @@ public class Car {
                 }
                 else if(diff <= moveSpeed && diff > 0){
                     carY += diff;
-                    //diff = 0;
+                    finished = true;
                 }
                 break;
             case 2: diff = carX - clX;
@@ -118,7 +99,7 @@ public class Car {
                 }
                 else if(diff <= moveSpeed && diff > 0){
                     carX -= diff;
-                    //diff = 0;
+                    finished = true;
                 }
                 break;
             case 3: diff = carY - clY;
@@ -128,7 +109,7 @@ public class Car {
                 }
                 else if(diff <= moveSpeed && diff > 0){
                     carY -= diff;
-                    //diff = 0;
+                    finished = true;
                 }
                 break;
         }
@@ -150,6 +131,14 @@ public class Car {
         return "x: " + carX + ", diff: " + diff + ", speed: " + moveSpeed;
     }
 
+    public boolean getFinished(){
+        return finished;
+    }
+
+    public void setFinished(boolean b){
+        this.finished = b;
+    }
+    
     public int getCarX(){
         return carX;
     }
@@ -204,5 +193,11 @@ public class Car {
     public void setCurrentLocation(int currentLocation)
     {
         this.currentLocation = currentLocation;
+    }
+
+    @Override
+    public void run()
+    {
+        //this is where the thread will start
     }
 }
