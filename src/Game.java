@@ -1,9 +1,12 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Created by Tom on 2/25/2015.
@@ -12,13 +15,13 @@ public class Game extends JPanel implements ActionListener
 {
     private Car[] cars;
     private Venue venue;
-
-    private boolean movePressed;
-
-    private Timer timer;
+    private Timer t;
 
     private JButton moveButton,
                     nextLocButton;
+    
+    private boolean movePressed, nextPressed;
+    private Timer timer;
 
     public Game(int xSize, int ySize) {
         
@@ -30,17 +33,16 @@ public class Game extends JPanel implements ActionListener
         //create 4 cars
         cars = new Car[4];
         
-        Driver driver = new Driver("");
+        Driver driver = new Driver("Driver Name");
+        
         movePressed = false;
+        nextPressed = false; 
 
-//        car = new Car(driver, "yellowCar.png", venue);
-//        car.setLocation(venue.getLocations().get(0).getX(), venue.getLocations().get(0).getY());
-
-        cars[0] = new Car(driver, "yellowCar.png", venue);
-        cars[1] = new Car(driver, "yellowCar.png", venue);
-        cars[2] = new Car(driver, "yellowCar.png", venue);
-        cars[3] = new Car(driver, "yellowCar.png", venue);
-
+        cars[0] = new Car(driver, "yellowCar.png", venue.getLocations());
+        cars[1] = new Car(driver, "yellowCar.png", venue.getLocations());
+        cars[2] = new Car(driver, "yellowCar.png", venue.getLocations());
+        cars[3] = new Car(driver, "yellowCar.png", venue.getLocations());
+        
         timer = new Timer(500, this);
         timer.setActionCommand("timer");
         timer.start();
@@ -58,10 +60,14 @@ public class Game extends JPanel implements ActionListener
 
     }
 
+/**
+ * Sets every car to a different starting position.  
+ */
     public void setCarStart(){
-        for(int i = 0; i < 4; i++){
-            cars[i].setLocation(venue.getLocations().get(i).getX(), venue.getLocations().get(i).getY());
-            cars[i].setCurrentLocation(i);
+        for(int i = 0; i < cars.length; i++) {
+            cars[i].setStartLocation(i);
+            //cars[i].setLocation(venue.getLocations().get(i).getX(), venue.getLocations().get(i).getY());
+            
         }
     }
 
@@ -82,7 +88,7 @@ public class Game extends JPanel implements ActionListener
       
       // add locations
       // these coordinates, names and images should change-- just as placeholders
-      venue.addLocation("Location 1", "locationPlaceholder.png", 10, 10); 
+      venue.addLocation("Location 1", "locationPlaceholder.png", 10, 200); 
       venue.addLocation("Location 2", "locationPlaceholder.png", width - 50, 10); 
       venue.addLocation("Location 3", "locationPlaceholder.png", width - 50, height - 50);
       venue.addLocation("Location 4", "locationPlaceholder.png", 10, height - 50);
@@ -114,33 +120,117 @@ public class Game extends JPanel implements ActionListener
         venue.draw(artist);
         
         //cars[0].draw(artist); 
-        for(Car c : cars){
+        for (Car c : cars) {
             c.draw(artist);
         }
-        
+
+        //t.start();
     }
+    
+/**
+ * Causes all cars to move around the track until they have all reached their starting postions again. 
+ */
+    public void race() {
+      
+      int carsDone = 0;
+
+      // while cars still racing
+      while (carsDone < cars.length) {
+        
+          // pause between movements
+          try {
+            Thread.sleep(150); 
+          } catch (Exception ex) {
+                   //System.out.println("cannot sleep");
+          }
+         
+          // for every car
+          for(Car c : cars) {
+            
+            // if haven't finished race
+            if (c.finishedRace() == false)
+            {
+              // move towards next
+              if (!c.atLocation()) {
+                c.move();
+              }
+              // otherwise reset next location
+              else {
+                c.resetLocation(); 
+                
+                // back at starting location
+                if (c.getCurrentLocation() == c.getStartLocation()) {
+                  c.setFinishedRace(true);
+                  carsDone++; 
+                }
+              }
+            }
+            repaint(); 
+          }
+       }
+    }
+    
+    public void raceTwo() {
+      int carsDone = 0;
+
+      // while cars still racing
+      if (carsDone < cars.length) {
+        
+          // pause between movements
+          /*try {
+            Thread.sleep(150); 
+          } catch (Exception ex) {
+                   //System.out.println("cannot sleep");
+          }*/
+         
+          // for every car
+          for (Car c : cars) {
+            
+            // if haven't finished race
+            if (c.finishedRace() == false)
+            {
+              // move towards next
+              if (!c.atLocation()) {
+                c.move();
+              }
+              // otherwise reset next location
+              else {
+                c.resetLocation(); 
+                
+                // back at starting location
+                if (c.getCurrentLocation() == c.getStartLocation()) {
+                  c.setFinishedRace(true);
+                  carsDone++; 
+                }
+              }
+            }
+            repaint(); 
+          }
+       }
+      
+    }
+
 
     public void actionPerformed(ActionEvent e){
         System.out.println(e.getActionCommand());
 
-        if(e.getActionCommand().equals("timer") && movePressed){
+        if(e.getActionCommand().equals("timer") && movePressed) {
             repaint();
-            for(Car c : cars){
+            for(Car c : cars) {
                 c.move();
             }
         }
 
-        if(e.getActionCommand().equals("Move")){
+        if(e.getActionCommand().equals("Move")) {
             movePressed = true;
         }
+        
+        if(e.getActionCommand().equals("Next Location")) {
+            nextPressed = true;
+        }
 
-        if(e.getActionCommand().equals("Next Location")){
-
-            setNextLoc();
-            for(Car c : cars){
-                c.makeEngine();
-                c.getCurrentLocation();
-            }
+        if(e.getActionCommand().equals("timer") && nextPressed) {
+            raceTwo(); 
         }
     }
 }
