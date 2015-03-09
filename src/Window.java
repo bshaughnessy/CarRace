@@ -45,5 +45,8 @@ public class Window extends JFrame{
 
         this.pack();
         this.revalidate();
+
+
+        //gamePanel.getCars()[0].getDriver().setName
     }
 }
