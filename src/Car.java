@@ -1,20 +1,9 @@
 import java.util.ArrayList;
 import java.util.Random;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-
 import javax.imageio.ImageIO;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
 import java.io.File;
-import java.io.IOException;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Point;
 import java.util.*;
 
 
@@ -27,7 +16,6 @@ public class Car {
                 carX,
                 carY,
                 moveSpeed,
-                diff,
                 currentLocation,
                 startLocation;
     private boolean finishedRace;
@@ -36,7 +24,7 @@ public class Car {
     private BufferedImage carImage;
     
     // tom
-    private boolean moving;
+    private boolean timerStarted;
     private Timer timer;
 
     /**
@@ -57,10 +45,10 @@ public class Car {
         totalTime = 0;
         carX = 0;
         carY = 0;
-        diff = 0;
         currentLocation = 0;
         startLocation = 0; 
-        finishedRace = false; 
+        finishedRace = false;
+        timerStarted = false;
         this.driver = driver;
         this.locations = locations;
         
@@ -82,14 +70,16 @@ public class Car {
         startLocation = 0; 
     }
     
-        public void startTimer(){
+    public void startTimer(){
+        timer = new Timer();
+        time = 0;
+        timerStarted = true;
         timer.scheduleAtFixedRate(new TimerTask()
         {
             @Override
             public void run()
             {
                 time++;
-                System.out.println(time);
             }
         }, new Date(), 1000);
     }
@@ -159,12 +149,12 @@ public class Car {
     }
     
     public void resetLocation() {
-      System.out.println("before current: " + currentLocation);
-      System.out.println("before next: " + getNextLocation());
-      currentLocation = getNextLocation(); 
-      System.out.println("after current: " + currentLocation);
-      System.out.println("after next: " + getNextLocation());
-      
+      currentLocation = getNextLocation();
+        makeEngine();
+    }
+
+    public void addTime(int i){
+        this.totalTime += i;
     }
 
     /**
@@ -194,6 +184,10 @@ public class Car {
     public int getCurrentTrack()
     {
         return 0;
+    }
+
+    public int getTotalTime(){
+        return totalTime;
     }
     
     public void setTotalTime(int i){
@@ -229,5 +223,13 @@ public class Car {
     
     public void setFinishedRace(boolean hasFinished) {
       finishedRace = hasFinished; 
+    }
+
+    public boolean getTimerStarted(){
+        return timerStarted;
+    }
+
+    public void setTimerStarted(boolean b){
+        timerStarted = b;
     }
 }
