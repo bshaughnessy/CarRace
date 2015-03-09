@@ -7,6 +7,7 @@ import java.awt.*;
 public class Window extends JFrame{
 
     private Game gamePanel;
+    private JTextArea scoreArea;
 
     public Window(){
         makeWindow();
@@ -14,8 +15,10 @@ public class Window extends JFrame{
 
     public void makeWindow(){
         //items
+
         JPanel mainPanel = new JPanel(new BorderLayout());
         JPanel scoreBoard = new JPanel();
+        scoreArea = new JTextArea();
 
         // these dimensions can change-- just there to get something working
         gamePanel = new Game(500, 500);
@@ -29,10 +32,16 @@ public class Window extends JFrame{
         //this.setSize(screenWidth, screenHeight);
         this.add(mainPanel);
 
+        Dimension d = new Dimension(screenWidth / 4, screenHeight);
+
         //visual purposes only!
         mainPanel.setBackground(Color.black);
-        scoreBoard.setBackground(Color.blue);
+        gamePanel.setBackground(Color.LIGHT_GRAY);
+        scoreBoard.add(scoreArea);
 
+        scoreArea.setText("First please enter your name. Then to start the game you can either make the cars move one leg of the race at a time or you can have the cars simulate the entire race. To start the simulation press one of the two buttons. If you press the move one leg button you will need to press it again after the cars have all finished the leg.");
+        scoreArea.setLineWrap(true);
+        scoreArea.setWrapStyleWord(true);
         Container c = getContentPane();
         c.add(scoreBoard);
 
@@ -41,12 +50,17 @@ public class Window extends JFrame{
         mainPanel.setPreferredSize(new Dimension(screenWidth, screenHeight));
         mainPanel.add(scoreBoard, BorderLayout.EAST);
         mainPanel.add(gamePanel, BorderLayout.CENTER);
-        scoreBoard.setPreferredSize(new Dimension(screenWidth / 4, screenHeight));
+        scoreBoard.setPreferredSize(d);
+        scoreArea.setPreferredSize(d);
 
         this.pack();
         this.revalidate();
 
 
         //gamePanel.getCars()[0].getDriver().setName
+    }
+
+    public Game getGamePanel(){
+        return gamePanel;
     }
 }
