@@ -17,7 +17,7 @@ public class Game extends JPanel implements ActionListener{
     private Car[] cars;
     private Venue venue;
 
-    private boolean movePressed, nextPressed, racePressed;
+    private boolean movePressed, racePressed;
 
     public Game(int xSize, int ySize){
 
@@ -33,7 +33,6 @@ public class Game extends JPanel implements ActionListener{
         //Driver driver = new Driver("Driver Name");
 
         movePressed = false;
-        nextPressed = false;
         racePressed = false;
 
         //TODO: this should be set by the main class and the user input, and resize all the images
@@ -49,11 +48,9 @@ public class Game extends JPanel implements ActionListener{
         setCarStart();
 
         JButton moveButton = new JButton("Move");
-        JButton nextLocButton = new JButton("Next Location");
         JButton raceButton = new JButton("Full Race");
 
         moveButton.addActionListener(this);
-        nextLocButton.addActionListener(this);
         raceButton.addActionListener(this);
 
         this.setLayout(new BorderLayout());
@@ -62,7 +59,6 @@ public class Game extends JPanel implements ActionListener{
         this.add(bottomPanel, BorderLayout.SOUTH);
 
         bottomPanel.add(moveButton);
-        bottomPanel.add(nextLocButton);
         bottomPanel.add(raceButton);
     }
 
@@ -97,6 +93,15 @@ public class Game extends JPanel implements ActionListener{
                 location.setTextTop(true);
             }
         }
+    }
+    
+    /**
+     * Sets the players name. 
+     *
+     * @param  name    player's name
+     */
+    public void setPlayerName(String name) {
+      cars[0].getDriver().setName(name);
     }
 
     /**
@@ -154,28 +159,6 @@ public class Game extends JPanel implements ActionListener{
             }
         }
     }
-
-    /**
-     * Moves the car to its next location then stops upon arrival.
-     */
-    /*public void moveOneLeg() {
-        for(Car c : cars){
-            // if haven't gotten to next location yet
-            if(!c.atLocation() && c.getTimerStarted()){
-                c.move();
-            }
-            if(c.atLocation() && c.getTimerStarted()){
-                c.addTime(c.getTime());
-                c.stopTimer();
-                c.setTimerStarted(false);
-            }
-        }
-        if(isAllDone()){
-            movePressed = false;
-            //for testing TODO: DELETE
-            System.out.println(checkWinner());
-        }
-    }*/
     
     /**
      * Moves the car to its next location then stops upon arrival.
@@ -214,6 +197,11 @@ public class Game extends JPanel implements ActionListener{
               }
     }
     
+    /**
+     * Returns the name of the winner and the winner's time. 
+     * 
+     * @return  winner's name and time
+     */
     public String checkWinner(){
         int win = 1000;
         String winner = "";
@@ -240,39 +228,20 @@ public class Game extends JPanel implements ActionListener{
       }
       return doneCars == cars.length; 
     }
-
+    
     /**
-     * checks if all the cars are done
+     * Returns an array of all cars. 
+     * 
+     * @return  array of cars
      */
-    public boolean isAllDone(){
-        int i = 0;
-        for(Car c : cars){
-            if(c.atLocation()){
-                i++;
-            }
-        }
-        return i == 4;
-    }
-
-    /**
-     * Sets the next locations for the cars.
-     * No longer needed because moveOneLeg() method fixed to reset the next locations after the cars have finished moving.
-     */
-    public void setNextLocations(){
-        for(Car c : cars){
-            c.resetLocation();
-        }
+    public Car[] getCars(){
+        return cars;
     }
 
     public void actionPerformed(ActionEvent e){
         if(e.getActionCommand().equals("timer") && movePressed){
             repaint();
             moveOneLeg();
-        }
-
-        if(e.getActionCommand().equals("timer") && nextPressed){
-            setNextLocations();
-            nextPressed = false;
         }
 
         if(e.getActionCommand().equals("timer") && racePressed){
@@ -286,16 +255,9 @@ public class Game extends JPanel implements ActionListener{
             }
         }
 
-        if(e.getActionCommand().equals("Next Location")){
-            nextPressed = true;
-        }
-
         if(e.getActionCommand().equals("Full Race")){
+            movePressed = false; 
             racePressed = true;
         }
-    }
-
-    public Car[] getCars(){
-        return cars;
     }
 }
