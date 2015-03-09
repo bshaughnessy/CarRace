@@ -1,8 +1,9 @@
 /**
  * Created by Tom on 2/25/15.
  */
-public class Driver {
+public class Driver{
     String name;
+
     public Driver(){
         name = " ";
     }

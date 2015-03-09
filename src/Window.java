@@ -5,11 +5,10 @@ import java.awt.*;
  * Created by Tom on 2/25/15.
  */
 public class Window extends JFrame{
-  
-  private Game gamePanel; 
+
+    private Game gamePanel;
 
     public Window(){
-
         makeWindow();
     }
 
@@ -17,9 +16,9 @@ public class Window extends JFrame{
         //items
         JPanel mainPanel = new JPanel(new BorderLayout());
         JPanel scoreBoard = new JPanel();
-        
+
         // these dimensions can change-- just there to get something working
-        gamePanel = new Game(500, 500); 
+        gamePanel = new Game(500, 500);
 
         //setting the frame
         this.setLayout(new FlowLayout());
@@ -42,7 +41,7 @@ public class Window extends JFrame{
         mainPanel.setPreferredSize(new Dimension(screenWidth, screenHeight));
         mainPanel.add(scoreBoard, BorderLayout.EAST);
         mainPanel.add(gamePanel, BorderLayout.CENTER);
-        scoreBoard.setPreferredSize(new Dimension(screenWidth/4, screenHeight));
+        scoreBoard.setPreferredSize(new Dimension(screenWidth / 4, screenHeight));
 
         this.pack();
         this.revalidate();
