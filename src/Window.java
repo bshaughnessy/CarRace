@@ -63,4 +63,8 @@ public class Window extends JFrame{
     public Game getGamePanel(){
         return gamePanel;
     }
+
+    public JTextArea getScoreArea(){
+        return scoreArea;
+    }
 }

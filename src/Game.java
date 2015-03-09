@@ -39,9 +39,9 @@ public class Game extends JPanel implements ActionListener{
 
         //TODO: this should be set by the main class and the user input, and resize all the images
         cars[0] = new Car(new Driver("A"), "./images/yellowCar.png", venue.getLocations());
-        cars[1] = new Car(new Driver("B"), "yellowCar.png", venue.getLocations());
-        cars[2] = new Car(new Driver("C"), "yellowCar.png", venue.getLocations());
-        cars[3] = new Car(new Driver("D"), "yellowCar.png", venue.getLocations());
+        cars[1] = new Car(new Driver("B"), "./images/yellowCar.png", venue.getLocations());
+        cars[2] = new Car(new Driver("C"), "./images/yellowCar.png", venue.getLocations());
+        cars[3] = new Car(new Driver("D"), "./images/yellowCar.png", venue.getLocations());
 
         Timer timer = new Timer(250, this);
         timer.setActionCommand("timer");
@@ -196,8 +196,6 @@ public class Game extends JPanel implements ActionListener{
               // if race finsihed
               if(raceFinished()){
                 movePressed = false;
-                //for testing TODO: DELETE
-                System.out.println(checkWinner());
               }
     }
     

@@ -18,6 +18,11 @@ public class Main{
     public static void main(String[] args){
         Window w = new Window();
         w.pack();
-
+        while(true){
+            if(w.getGamePanel().raceFinished()){
+                w.getScoreArea().setText(w.getGamePanel().checkWinner());
+                break;
+            }
+        }
     }
 }
