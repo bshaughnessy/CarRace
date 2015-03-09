@@ -7,6 +7,12 @@ import java.awt.*;
 /**
  * Created by Tom on 2/25/2015.
  */
+/**
+ * The Game class... 
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
 public class Game extends JPanel implements ActionListener{
     private Car[] cars;
     private Venue venue;
@@ -58,9 +64,6 @@ public class Game extends JPanel implements ActionListener{
         bottomPanel.add(moveButton);
         bottomPanel.add(nextLocButton);
         bottomPanel.add(raceButton);
-
-
-
     }
 
     /**

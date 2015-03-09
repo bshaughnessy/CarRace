@@ -6,11 +6,16 @@ import java.io.File;
 import java.awt.Graphics2D;
 import java.util.*;
 
-
+/**
+ * The Car class...
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
 /**
  * Created by Tom on 2/25/15.
  */
-public class Car{
+public class Car {
     private int time, totalTime, carX, carY, moveSpeed, currentLocation, startLocation;
     private boolean finishedRace, timerStarted;
     private Driver driver;
@@ -47,7 +52,7 @@ public class Car{
     }
 
     /**
-     * No arg constructor for objects of type car.
+     * No arg constructor for objects of type Car.
      */
     public Car(){
         driver = null;
@@ -62,10 +67,9 @@ public class Car{
     }
 
     /**
-     * starts the timer for the car
-     * changes time to 0 to reset the increment
+     * Starts the timer for the car and changes time to 0 to reset the increment. 
      */
-    public void startTimer(){
+    public void startTimer() {
         timer = new Timer();
         time = 0;
         timerStarted = true;
@@ -87,7 +91,7 @@ public class Car{
     /**
      * Moves the car to the next location in their route.
      */
-    public void move(){
+    public void move() {
         // delta x
         int deltaX = locations.get(getNextLocation()).getX() - carX;
 
@@ -109,7 +113,9 @@ public class Car{
     }
 
     /**
-     * Gets the distance between the car's current postion and the next location's coordinates.
+     * Returns the distance between the car's current postion and the next location's coordinates.
+     * 
+     * @return  distance between current and next position
      */
     public double getDistance(){
         // delta x
@@ -125,18 +131,25 @@ public class Car{
     }
 
     /**
-     * Gets the next Location that the car will travel to.
+     * Returns the index of the next location in list of locations.
+     * 
+     * @return  index of next location
      */
     public int getNextLocation(){
         return (currentLocation + 1) % locations.size();
     }
 
+    /**
+     * Draws the car. 
+     * 
+     * @param  g2d    graphics 2d object
+     */
     public void draw(Graphics2D g2d){
         g2d.drawImage(carImage, null, carX, carY);
     }
 
     /**
-     * sets the speed of the car
+     * Sets the speed of the car.
      */
     public void makeEngine(){
         Random r = new Random();
@@ -144,15 +157,15 @@ public class Car{
     }
 
     /**
-     * returns true if the car is at its next destination
+     * Returns true if the car is within 20 pixels of its next location. 
      */
     public boolean atLocation(){
         return getDistance() < 20;
     }
 
     /**
-     * changes to the next destination of the car
-     * and alters the car speed
+     * Changes the current location to the next destination of the car
+     * and alters the car speed. 
      */
     public void resetLocation(){
         currentLocation = getNextLocation();
@@ -160,7 +173,7 @@ public class Car{
     }
 
     /**
-     * adds to the cars total time
+     * Adds to the cars total time. 
      */
     public void addTime(int i){
         this.totalTime += i;
@@ -169,50 +182,101 @@ public class Car{
     /**
      * Getters and Setters
      */
+    
+    /**
+     * Sets the location of the car.
+     * 
+     * @param  x    x-coordinate
+     * @param  y    y-coordinate
+     */
     public void setLocation(int x, int y){
         carX = x;
         carY = y;
     }
 
+    /**
+     * Returns the driver of the car.
+     * 
+     * @return  the driver object
+     */
     public Driver getDriver(){
         return driver;
     }
 
+    /**
+     * Returns the total time that the car has traveled during the race. 
+     */
     public int getTotalTime(){
         return totalTime;
     }
 
+    /**
+     * What is difference between this and total time?
+     */
     public int getTime(){
         return time;
     }
 
+    /**
+     * Returns the index of the current location in the list.
+     * 
+     * @return  current location index 
+     */
     public int getCurrentLocation(){
         return currentLocation;
     }
 
+    /**
+     * Sets the start position of the car. 
+     */
     public void setStartLocation(int startLocation){
         this.startLocation = startLocation;
         setLocation(locations.get(startLocation).getX(), locations.get(startLocation).getY());
         currentLocation = startLocation;
     }
 
-    public int getStartLocation(){
+    /**
+     * Returns the index of the start position of the car. 
+     * 
+     * @return  start position index
+     */
+    public int getStartLocation() {
         return startLocation;
     }
 
-    public boolean finishedRace(){
+    /**
+     * Returns true if the car has finished the race, otherwise returns false.
+     * 
+     * @return  true if finished race, otherwise false
+     */
+    public boolean finishedRace() {
         return finishedRace;
     }
 
-    public void setFinishedRace(boolean hasFinished){
+    /**
+     * Sets if the car has finished the race or not. 
+     * 
+     * @param  hasFinished    whether or not the car has finished the race
+     */
+    public void setFinishedRace(boolean hasFinished) {
         finishedRace = hasFinished;
     }
 
-    public boolean getTimerStarted(){
+    /**
+     * Returns true if the timer has started, otherwise returns false.
+     * 
+     * @return  returns true if timer started, otherwise false
+     */
+    public boolean getTimerStarted() {
         return timerStarted;
     }
 
-    public void setTimerStarted(boolean b){
+    /**
+     * Sets whether or not the timer has started.
+     * 
+     * @param  b    whether or not timer started
+     */
+    public void setTimerStarted(boolean b) {
         timerStarted = b;
     }
 }

@@ -72,9 +72,9 @@ public class Location{
         g.setColor(Color.BLACK);
 
         // draw string
-        if(textOnTop){
+        if (textOnTop) {
             g.drawString(name, x, y - 5);
-        }else{
+        } else {
             g.drawString(name, x, y + 60);
         }
     }
