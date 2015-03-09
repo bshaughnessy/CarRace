@@ -98,6 +98,15 @@ public class Game extends JPanel implements ActionListener{
             }
         }
     }
+    
+    /**
+     * Sets the players name. 
+     *
+     * @param  name    player's name
+     */
+    public void setPlayerName(String name) {
+      cars[0].getDriver().setName(name);
+    }
 
     /**
      * Draws all components of the game: venue and cars.
@@ -154,31 +163,49 @@ public class Game extends JPanel implements ActionListener{
             }
         }
     }
-
+    
     /**
-     * Moves the car to its next location then stops upon arrival
+     * Moves the car to its next location then stops upon arrival.
+     * Upon arrival, resets next location. 
      */
-    public void moveOneLeg(){
-        for(Car c : cars){
-            // if haven't gotten to next location yet
-            if(!c.atLocation() && c.getTimerStarted()){
-                c.move();
-            }
-            if(c.atLocation() && c.getTimerStarted()){
-                c.addTime(c.getTime());
-                c.stopTimer();
-                c.setTimerStarted(false);
-            }
-        }
-        if(isAllDone()){
-            movePressed = false;
-            //for testing TODO: DELETE
-            setNextLocations();
-            System.out.println(checkWinner());
-            racesFinished++;
-        }
+    public void moveOneLeg() {
+              for(Car c : cars) {
+                
+                // if car timer started
+                if (c.getTimerStarted()) {
+                  
+                  // if car not at location, move to next location
+                  if (!c.atLocation()) {
+                    c.move(); 
+                  } else {
+                    // otherwise reset timer and reset location
+                    c.addTime(c.getTime());
+                    c.stopTimer();
+                    c.setTimerStarted(false);
+                    c.resetLocation(); 
+                    
+                    // if back at starting position
+                    if (c.getCurrentLocation() == c.getStartLocation()) {
+                      //System.out.println("back at start"); 
+                      c.setFinishedRace(true);
+                    }
+                  }
+                }
+              }
+              
+              // if race finsihed
+              if(raceFinished()){
+                movePressed = false;
+                //for testing TODO: DELETE
+                System.out.println(checkWinner());
+              }
     }
-
+    
+    /**
+     * Returns the name of the winner and the winner's time. 
+     * 
+     * @return  winner's name and time
+     */
     public String checkWinner(){
         int win = 1000;
         String winner = "";
@@ -190,27 +217,29 @@ public class Game extends JPanel implements ActionListener{
         }
         return "Winner is " + winner + " ,in " + win + " seconds";
     }
-
+    
     /**
-     * checks if all the cars are done
+     * Returns true if all cars have finsihed the race. Otherwise return false.
+     * 
+     * @return  true if all cars finished race, otherwise false
      */
-    public boolean isAllDone(){
-        int i = 0;
-        for(Car c : cars){
-            if(c.atLocation()){
-                i++;
-            }
+    public boolean raceFinished() {
+      int doneCars = 0; 
+      for (Car c : cars) {
+        if (c.finishedRace() == true) {
+          doneCars++; 
         }
-        return i == 4;
+      }
+      return doneCars == cars.length; 
     }
-
+    
     /**
-     * Sets the next locations for the cars
+     * Returns an array of all cars. 
+     * 
+     * @return  array of cars
      */
-    public void setNextLocations(){
-        for(Car c : cars){
-            c.resetLocation();
-        }
+    public Car[] getCars(){
+        return cars;
     }
 
     public void actionPerformed(ActionEvent e){
@@ -231,19 +260,8 @@ public class Game extends JPanel implements ActionListener{
         }
 
         if(e.getActionCommand().equals("Full Race")){
+            movePressed = false; 
             racePressed = true;
         }
-    }
-
-    public Car[] getCars(){
-        return cars;
-    }
-
-    public int getRacesFinished(){
-        return racesFinished;
-    }
-
-    public Venue getVenue(){
-        return venue;
     }
 }

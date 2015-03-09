@@ -57,7 +57,7 @@ public class Window extends JFrame{
         this.revalidate();
 
 
-        //gamePanel.getCars()[0].getDriver().setName
+        //gamePanel.setPlayerName(nameInputHere); 
     }
 
     public Game getGamePanel(){

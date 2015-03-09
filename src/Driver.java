@@ -14,7 +14,7 @@ public class Driver {
      * No arg constructor for objects of type Driver.
      */
     public Driver(){
-        name = " ";
+        name = "";
     }
 
     /**
@@ -33,6 +33,11 @@ public class Driver {
         return name;
     }
 
+    /**
+     * Sets the driver's name. 
+     *
+     * @param  s    player's name
+     */
     public void setName(String s){
         this.name = s;
     }

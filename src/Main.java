@@ -19,20 +19,5 @@ public class Main{
         Window w = new Window();
         w.pack();
 
-
-        while(true){
-            try{
-                if(w.getGamePanel().getRacesFinished() == w.getGamePanel().getVenue().getLocations().size()){
-                    System.out.println(w.getGamePanel().checkWinner());
-                    break;
-                }
-
-            }
-            catch(Exception e){
-                e.printStackTrace();
-                break;
-            }
-
-        }
     }
 }

@@ -31,7 +31,7 @@ public class Car {
 
         //access image file
         try{
-            carImage = ImageIO.read(new File("./images/yellowCar.png"));
+            carImage = ImageIO.read(new File("../images/yellowCar.png"));
         }catch(Exception e){
             System.out.println("Car image file not found");
         }
