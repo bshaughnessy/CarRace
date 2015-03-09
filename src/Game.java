@@ -156,9 +156,9 @@ public class Game extends JPanel implements ActionListener{
     }
 
     /**
-     * Moves the car to its next location then stops upon arrival
+     * Moves the car to its next location then stops upon arrival.
      */
-    public void moveOneLeg(){
+    /*public void moveOneLeg() {
         for(Car c : cars){
             // if haven't gotten to next location yet
             if(!c.atLocation() && c.getTimerStarted()){
@@ -175,8 +175,45 @@ public class Game extends JPanel implements ActionListener{
             //for testing TODO: DELETE
             System.out.println(checkWinner());
         }
+    }*/
+    
+    /**
+     * Moves the car to its next location then stops upon arrival.
+     * Upon arrival, resets next location. 
+     */
+    public void moveOneLeg() {
+              for(Car c : cars) {
+                
+                // if car timer started
+                if (c.getTimerStarted()) {
+                  
+                  // if car not at location, move to next location
+                  if (!c.atLocation()) {
+                    c.move(); 
+                  } else {
+                    // otherwise reset timer and reset location
+                    c.addTime(c.getTime());
+                    c.stopTimer();
+                    c.setTimerStarted(false);
+                    c.resetLocation(); 
+                    
+                    // if back at starting position
+                    if (c.getCurrentLocation() == c.getStartLocation()) {
+                      //System.out.println("back at start"); 
+                      c.setFinishedRace(true);
+                    }
+                  }
+                }
+              }
+              
+              // if race finsihed
+              if(raceFinished()){
+                movePressed = false;
+                //for testing TODO: DELETE
+                System.out.println(checkWinner());
+              }
     }
-
+    
     public String checkWinner(){
         int win = 1000;
         String winner = "";
@@ -187,6 +224,21 @@ public class Game extends JPanel implements ActionListener{
             }
         }
         return "Winner is " + winner + " ,in " + win + " seconds";
+    }
+    
+    /**
+     * Returns true if all cars have finsihed the race. Otherwise return false.
+     * 
+     * @return  true if all cars finished race, otherwise false
+     */
+    public boolean raceFinished() {
+      int doneCars = 0; 
+      for (Car c : cars) {
+        if (c.finishedRace() == true) {
+          doneCars++; 
+        }
+      }
+      return doneCars == cars.length; 
     }
 
     /**
@@ -203,7 +255,8 @@ public class Game extends JPanel implements ActionListener{
     }
 
     /**
-     * Sets the next locations for the cars
+     * Sets the next locations for the cars.
+     * No longer needed because moveOneLeg() method fixed to reset the next locations after the cars have finished moving.
      */
     public void setNextLocations(){
         for(Car c : cars){
