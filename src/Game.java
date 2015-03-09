@@ -147,8 +147,6 @@ public class Game extends JPanel implements ActionListener{
                             carsDone++;
                             c.stopTimer();
                             c.addTime(c.getTime());
-                            //for testing TODO: DELETE
-                            System.out.println(c.getTime());
                         }
                     }
                 }
@@ -175,10 +173,20 @@ public class Game extends JPanel implements ActionListener{
         if(isAllDone()){
             movePressed = false;
             //for testing TODO: DELETE
-            for(Car c : cars){
-                System.out.println(c.getTotalTime());
+            System.out.println(checkWinner());
+        }
+    }
+
+    public String checkWinner(){
+        int win = 1000;
+        String winner = "";
+        for(Car c : cars){
+            if (c.getTotalTime() <= win){
+                win = c.getTotalTime();
+                winner = c.getDriver().getName();
             }
         }
+        return "Winner is " + winner + " ,in " + win + " seconds";
     }
 
     /**
@@ -232,5 +240,9 @@ public class Game extends JPanel implements ActionListener{
         if(e.getActionCommand().equals("Full Race")){
             racePressed = true;
         }
+    }
+
+    public Car[] getCars(){
+        return cars;
     }
 }
