@@ -2,11 +2,9 @@
  * Created by Tom on 3/1/15.
  * <p/>
  * TODO:
- * resize images
  * take the user input
- * set up main method
  * integrate window stuff
- * start over
+ * start over - possibility
  * Winner function
  * make the cars turn in the direction of their next location
  * get other images for the locations

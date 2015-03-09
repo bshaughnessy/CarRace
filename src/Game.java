@@ -19,7 +19,8 @@ public class Game extends JPanel implements ActionListener{
     private boolean movePressed,
                     racePressed;
 
-    private int racesFinished;
+    private JButton moveButton,
+                    raceButton;
 
     public Game(int xSize, int ySize){
 
@@ -49,8 +50,8 @@ public class Game extends JPanel implements ActionListener{
 
         setCarStart();
 
-        JButton moveButton = new JButton("Move");
-        JButton raceButton = new JButton("Full Race");
+        moveButton = new JButton("Move");
+        raceButton = new JButton("Full Race");
 
         moveButton.addActionListener(this);
         raceButton.addActionListener(this);
@@ -62,8 +63,6 @@ public class Game extends JPanel implements ActionListener{
 
         bottomPanel.add(moveButton);
         bottomPanel.add(raceButton);
-
-        racesFinished = 0;
     }
 
     /**
@@ -188,6 +187,9 @@ public class Game extends JPanel implements ActionListener{
                     if (c.getCurrentLocation() == c.getStartLocation()) {
                       //System.out.println("back at start"); 
                       c.setFinishedRace(true);
+                        if(raceFinished()){
+                            disableButtons(true);
+                        }
                     }
                   }
                 }
@@ -196,6 +198,7 @@ public class Game extends JPanel implements ActionListener{
               // if race finsihed
               if(raceFinished()){
                 movePressed = false;
+                  disableButtons(true);
               }
     }
     
@@ -214,6 +217,14 @@ public class Game extends JPanel implements ActionListener{
             }
         }
         return "Winner is " + winner + " ,in " + win + " seconds";
+    }
+
+    /**
+     * sets the buttons to enabled or disabled
+     */
+    public void disableButtons(boolean b){
+        moveButton.setEnabled(b);
+        raceButton.setEnabled(b);
     }
     
     /**
@@ -252,6 +263,7 @@ public class Game extends JPanel implements ActionListener{
 
         if(e.getActionCommand().equals("Move")){
             movePressed = true;
+            disableButtons(false);
             for(Car c : cars){
                 c.startTimer();
             }
@@ -260,6 +272,7 @@ public class Game extends JPanel implements ActionListener{
         if(e.getActionCommand().equals("Full Race")){
             movePressed = false; 
             racePressed = true;
+            disableButtons(false);
         }
     }
 }
