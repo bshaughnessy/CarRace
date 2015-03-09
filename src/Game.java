@@ -1,6 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 /**
@@ -49,9 +50,16 @@ public class Game extends JPanel implements ActionListener{
         nextLocButton.addActionListener(this);
         raceButton.addActionListener(this);
 
-        this.add(moveButton);
-        this.add(nextLocButton);
-        this.add(raceButton);
+        this.setLayout(new BorderLayout());
+
+        JPanel bottomPanel = new JPanel(new GridLayout(1, 3));
+        this.add(bottomPanel, BorderLayout.SOUTH);
+
+        bottomPanel.add(moveButton);
+        bottomPanel.add(nextLocButton);
+        bottomPanel.add(raceButton);
+
+
 
     }
 
