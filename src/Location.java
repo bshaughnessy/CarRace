@@ -25,7 +25,7 @@ public class Location{
 
         // access image file
         try{
-            image = ImageIO.read(new File("../images/" + imgFile));
+            image = ImageIO.read(new File("./images/" + imgFile));
         }catch(Exception e){
             System.out.println("Image file not found");
         }
