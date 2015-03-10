@@ -27,7 +27,7 @@ public class Location{
 
         // access image file
         try{
-            image = ImageIO.read(new File("./images/locationPlaceholder.png"));
+            image = ImageIO.read(new File("../images/" + imgFile));
         }catch(Exception e){
             System.out.println("Image file not found");
         }
@@ -67,15 +67,15 @@ public class Location{
      */
     public void draw(Graphics2D g){
         // draw image
-        g.drawImage(image, null, x, y);
+        g.drawImage(image, null, x, y - 85);
 
         g.setColor(Color.BLACK);
 
         // draw string
         if(textOnTop){
-            g.drawString(name, x, y - 5);
+            g.drawString(name, x, y);
         }else{
-            g.drawString(name, x, y + 60);
+            g.drawString(name, x, y);
         }
     }
 }

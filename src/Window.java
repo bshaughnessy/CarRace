@@ -1,6 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-
+import javax.swing.border.Border;
 /**
  * Created by Tom on 2/25/15.
  */
@@ -43,6 +43,10 @@ public class Window extends JFrame{
         scoreArea.setLineWrap(true);
         scoreArea.setWrapStyleWord(true);
         scoreArea.setEditable(false);
+        // add border and padding around text
+        Border border = BorderFactory.createLineBorder(Color.BLACK);
+        scoreArea.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        
         Container c = getContentPane();
         c.add(scoreBoard);
 

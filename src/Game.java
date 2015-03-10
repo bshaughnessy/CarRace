@@ -89,11 +89,10 @@ public class Game extends JPanel implements ActionListener{
         int height = getHeight();
 
         // add locations
-        // these coordinates, names and images should change-- just as placeholders
-        venue.addLocation("Location 1", "./images/locationPlaceholder.png", 10, 200);
-        venue.addLocation("Location 2", "./images/locationPlaceholder.png", width - 50, 10);
-        venue.addLocation("Location 3", "./images/locationPlaceholder.png", width - 50, height - 50);
-        venue.addLocation("Location 4", "./images/locationPlaceholder.png", 10, height - 50);
+        venue.addLocation("Cotton Candy Forest", "candyTree.png", 10, height/2 + 75);
+        venue.addLocation("Chocolate Lava Cave", "chocolateCave.png", width/2, 100);
+        venue.addLocation("Marshmallow Stonehenge", "marshmallowRocks.png", width - 75, height/2 + 75);
+        venue.addLocation("Ice Cream Cone Castle", "coneCastle.png", width/2, height);
 
         // write text in correct spot according to coordinates
         for(Location location : venue.getLocations()){
@@ -216,6 +215,11 @@ public class Game extends JPanel implements ActionListener{
         }
     }
 
+    /**
+     * Returns true if all cars at their next locations. Otherwise returns false. 
+     *
+     * @return  true if cars at next locations, otherwise false
+     */
     public boolean allAtNextLoc(){
         int i = 0;
         for(Car c : cars){
@@ -240,7 +244,7 @@ public class Game extends JPanel implements ActionListener{
                 winner = c.getDriver().getName();
             }
         }
-        return "Winner is " + winner + " ,in " + win + " seconds. If you would like to play again press Restart";
+        return "Winner is " + winner + ", in " + win + " seconds! If you would like to play again press Restart.";
     }
 
     /**
