@@ -42,10 +42,13 @@ public class Window extends JFrame{
         titleLabel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         titleLabel.setOpaque(true);
         titleLabel.setBackground(Color.white);
+        
+        getContentPane().setBackground(new Color(198, 172, 127));
 
         //visual purposes only!
         mainPanel.setBackground(Color.black);
         gamePanel.setBackground(new Color(198, 172, 127));
+        scoreBoard.setBackground(new Color(198, 172, 127));
         scoreBoard.add(titleLabel);
         scoreBoard.add(scoreArea);
         

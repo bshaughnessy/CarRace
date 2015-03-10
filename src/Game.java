@@ -68,6 +68,10 @@ public class Game extends JPanel implements ActionListener{
         bottomPanel.add(moveButton);
         bottomPanel.add(raceButton);
         bottomPanel.add(restartButton);
+        
+        // add border of chocolate drops
+        ImageIcon icon = new ImageIcon("./images/drop.png");
+        this.setBorder(BorderFactory.createMatteBorder(20, 20, 0, 20, icon));
     }
 
     /**
@@ -89,9 +93,9 @@ public class Game extends JPanel implements ActionListener{
         int height = getHeight();
 
         // add locations
-        venue.addLocation("Cotton Candy Forest", "candyTree.png", 10, height/2 + 75);
-        venue.addLocation("Chocolate Lava Cave", "chocolateCave.png", width/2, 100);
-        venue.addLocation("Marshmallow Stonehenge", "marshmallowRocks.png", width - 75, height/2 + 75);
+        venue.addLocation("Cotton Candy Forest", "candyTree.png", 50, height/2 + 75);
+        venue.addLocation("Chocolate Lava Cave", "chocolateCave.png", width/2, 120);
+        venue.addLocation("Marshmallow Stonehenge", "marshmallowRocks.png", width - 100, height/2 + 75);
         venue.addLocation("Ice Cream Cone Castle", "coneCastle.png", width/2, height);
     }
 
