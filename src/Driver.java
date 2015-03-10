@@ -1,13 +1,14 @@
 /**
  * Created by Tom on 2/25/15.
  */
+
 /**
- * The Driver class... 
+ * The Driver class...
  *
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Driver {
+public class Driver{
     String name;
 
     /**
@@ -26,17 +27,17 @@ public class Driver {
 
     /**
      * Returns the name of the driver.
-     * 
-     * @return  name of driver
+     *
+     * @return name of driver
      */
     public String getName(){
         return name;
     }
 
     /**
-     * Sets the driver's name. 
+     * Sets the driver's name.
      *
-     * @param  s    player's name
+     * @param s player's name
      */
     public void setName(String s){
         this.name = s;

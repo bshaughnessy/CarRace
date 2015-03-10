@@ -42,6 +42,7 @@ public class Window extends JFrame{
         scoreArea.setText("First please enter your name. Then to start the game you can either make the cars move one leg of the race at a time or you can have the cars simulate the entire race. To start the simulation press one of the two buttons. If you press the move one leg button you will need to press it again after the cars have all finished the leg.");
         scoreArea.setLineWrap(true);
         scoreArea.setWrapStyleWord(true);
+        scoreArea.setEditable(false);
         Container c = getContentPane();
         c.add(scoreBoard);
 
@@ -55,6 +56,20 @@ public class Window extends JFrame{
 
         this.pack();
         this.revalidate();
+
+
+        while(true){
+            if(getGamePanel().raceFinished()){
+                getScoreArea().setText(getGamePanel().checkWinner());
+            }
+            if(gamePanel.getRestartPressed()){
+                getGamePanel().setRestartPressed(false);
+                dispose();
+                Window w = new Window();
+                break;
+            }
+
+        }
 
 
         //gamePanel.setPlayerName(nameInputHere); 

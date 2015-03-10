@@ -6,8 +6,9 @@ import java.awt.*;
 /**
  * Created by Tom on 2/25/2015.
  */
+
 /**
- * The Game class... 
+ * The Game class...
  *
  * @author (your name)
  * @version (a version number or a date)
@@ -16,11 +17,11 @@ public class Game extends JPanel implements ActionListener{
     private Car[] cars;
     private Venue venue;
 
-    private boolean movePressed,
-                    racePressed;
+    private boolean movePressed, racePressed, restartPressed;
 
-    private JButton moveButton,
-                    raceButton;
+    private JButton moveButton, raceButton, restartButton;
+
+    private Timer timer;
 
     public Game(int xSize, int ySize){
 
@@ -37,6 +38,7 @@ public class Game extends JPanel implements ActionListener{
 
         movePressed = false;
         racePressed = false;
+        restartPressed = false;
 
         //TODO: this should be set by the main class and the user input, and resize all the images
         cars[0] = new Car(new Driver("A"), "./images/yellowCar.png", venue.getLocations());
@@ -44,7 +46,7 @@ public class Game extends JPanel implements ActionListener{
         cars[2] = new Car(new Driver("C"), "./images/yellowCar.png", venue.getLocations());
         cars[3] = new Car(new Driver("D"), "./images/yellowCar.png", venue.getLocations());
 
-        Timer timer = new Timer(250, this);
+        timer = new Timer(250, this);
         timer.setActionCommand("timer");
         timer.start();
 
@@ -52,9 +54,11 @@ public class Game extends JPanel implements ActionListener{
 
         moveButton = new JButton("Move");
         raceButton = new JButton("Full Race");
+        restartButton = new JButton("Restart");
 
         moveButton.addActionListener(this);
         raceButton.addActionListener(this);
+        restartButton.addActionListener(this);
 
         this.setLayout(new BorderLayout());
 
@@ -63,6 +67,7 @@ public class Game extends JPanel implements ActionListener{
 
         bottomPanel.add(moveButton);
         bottomPanel.add(raceButton);
+        bottomPanel.add(restartButton);
     }
 
     /**
@@ -97,14 +102,14 @@ public class Game extends JPanel implements ActionListener{
             }
         }
     }
-    
+
     /**
-     * Sets the players name. 
+     * Sets the players name.
      *
-     * @param  name    player's name
+     * @param name player's name
      */
-    public void setPlayerName(String name) {
-      cars[0].getDriver().setName(name);
+    public void setPlayerName(String name){
+        cars[0].getDriver().setName(name);
     }
 
     /**
@@ -155,6 +160,12 @@ public class Game extends JPanel implements ActionListener{
                             carsDone++;
                             c.stopTimer();
                             c.addTime(c.getTime());
+                            if(raceFinished()){
+                                racePressed = false;
+                                restartButton.setEnabled(true);
+                                this.revalidate();
+                                System.out.println("test");
+                            }
                         }
                     }
                 }
@@ -162,93 +173,106 @@ public class Game extends JPanel implements ActionListener{
             }
         }
     }
-    
+
     /**
      * Moves the car to its next location then stops upon arrival.
-     * Upon arrival, resets next location. 
+     * Upon arrival, resets next location.
      */
-    public void moveOneLeg() {
-              for(Car c : cars) {
-                
-                // if car timer started
-                if (c.getTimerStarted()) {
-                  
-                  // if car not at location, move to next location
-                  if (!c.atLocation()) {
-                    c.move(); 
-                  } else {
+    public void moveOneLeg(){
+        for(Car c : cars){
+
+            // if car timer started
+            if(c.getTimerStarted()){
+
+                // if car not at location, move to next location
+                if(!c.atLocation()){
+                    c.move();
+                    c.setMoving(true);
+                }else{
                     // otherwise reset timer and reset location
                     c.addTime(c.getTime());
+                    c.setMoving(false);
                     c.stopTimer();
                     c.setTimerStarted(false);
-                    c.resetLocation(); 
-                    
+                    c.resetLocation();
                     // if back at starting position
-                    if (c.getCurrentLocation() == c.getStartLocation()) {
-                      //System.out.println("back at start"); 
-                      c.setFinishedRace(true);
-                        if(raceFinished()){
-                            disableButtons(true);
-                        }
+                    if(c.getCurrentLocation() == c.getStartLocation()){
+                        //System.out.println("back at start");
+                        c.setFinishedRace(true);
                     }
-                  }
+                    if(allAtNextLoc()){
+                        movePressed = false;
+                        moveButton.setEnabled(true);
+                    }
                 }
-              }
-              
-              // if race finsihed
-              if(raceFinished()){
-                movePressed = false;
-                  disableButtons(true);
-              }
+            }
+        }
+        // if race finished
+        if(raceFinished()){
+            movePressed = false;
+            moveButton.setEnabled(false);
+            restartButton.setEnabled(true);
+            this.revalidate();
+        }
     }
-    
+
+    public boolean allAtNextLoc(){
+        int i = 0;
+        for(Car c : cars){
+            if(!c.getMoving()){
+                i++;
+            }
+        }
+        return i == cars.length;
+    }
+
     /**
-     * Returns the name of the winner and the winner's time. 
-     * 
-     * @return  winner's name and time
+     * Returns the name of the winner and the winner's time.
+     *
+     * @return winner's name and time
      */
     public String checkWinner(){
         int win = 1000;
         String winner = "";
         for(Car c : cars){
-            if (c.getTotalTime() <= win){
+            if(c.getTotalTime() <= win){
                 win = c.getTotalTime();
                 winner = c.getDriver().getName();
             }
         }
-        return "Winner is " + winner + " ,in " + win + " seconds";
+        return "Winner is " + winner + " ,in " + win + " seconds. If you would like to play again press Restart";
     }
 
     /**
-     * sets the buttons to enabled or disabled
-     */
-    public void disableButtons(boolean b){
-        moveButton.setEnabled(b);
-        raceButton.setEnabled(b);
-    }
-    
-    /**
      * Returns true if all cars have finsihed the race. Otherwise return false.
-     * 
-     * @return  true if all cars finished race, otherwise false
+     *
+     * @return true if all cars finished race, otherwise false
      */
-    public boolean raceFinished() {
-      int doneCars = 0; 
-      for (Car c : cars) {
-        if (c.finishedRace() == true) {
-          doneCars++; 
+    public boolean raceFinished(){
+        int doneCars = 0;
+        for(Car c : cars){
+            if(c.finishedRace() == true){
+                doneCars++;
+            }
         }
-      }
-      return doneCars == cars.length; 
+        return doneCars == cars.length;
     }
-    
+
     /**
-     * Returns an array of all cars. 
-     * 
-     * @return  array of cars
+     * Returns an array of all cars.
+     *
+     * @return array of cars
      */
     public Car[] getCars(){
         return cars;
+    }
+
+    public boolean getRestartPressed(){
+        return restartPressed;
+    }
+
+    public void setRestartPressed(boolean b){
+        this.restartPressed = b;
     }
 
     public void actionPerformed(ActionEvent e){
@@ -263,16 +287,25 @@ public class Game extends JPanel implements ActionListener{
 
         if(e.getActionCommand().equals("Move")){
             movePressed = true;
-            disableButtons(false);
+            raceButton.setEnabled(false);
+            moveButton.setEnabled(false);
+            restartButton.setEnabled(false);
             for(Car c : cars){
                 c.startTimer();
             }
         }
 
         if(e.getActionCommand().equals("Full Race")){
-            movePressed = false; 
+            movePressed = false;
+            moveButton.setEnabled(false);
+            restartButton.setEnabled(false);
+            raceButton.setEnabled(false);
             racePressed = true;
-            disableButtons(false);
+        }
+
+        if(e.getActionCommand().equals("Restart")){
+            restartPressed = true;
+            timer.stop();
         }
     }
 }
