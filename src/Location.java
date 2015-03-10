@@ -14,7 +14,6 @@ public class Location{
     private BufferedImage image;
     private int x;
     private int y;
-    private boolean textOnTop;
 
     /**
      * Constructor for objects of class Location
@@ -23,7 +22,6 @@ public class Location{
         this.name = name;
         this.x = x;
         this.y = y;
-        textOnTop = false;
 
         // access image file
         try{
@@ -31,15 +29,6 @@ public class Location{
         }catch(Exception e){
             System.out.println("Image file not found");
         }
-    }
-
-    /**
-     * Sets if the location string is written above or below the image.
-     *
-     * @param newLocation true if the text should be on top, otherwise false
-     */
-    public void setTextTop(boolean newLocation){
-        textOnTop = newLocation;
     }
 
     /**
@@ -68,14 +57,9 @@ public class Location{
     public void draw(Graphics2D g){
         // draw image
         g.drawImage(image, null, x, y - 85);
-
-        g.setColor(Color.BLACK);
-
+        
         // draw string
-        if(textOnTop){
-            g.drawString(name, x, y);
-        }else{
-            g.drawString(name, x, y);
-        }
+        g.setColor(Color.BLACK);
+        g.drawString(name, x, y);
     }
 }

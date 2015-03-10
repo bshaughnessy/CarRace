@@ -93,13 +93,6 @@ public class Game extends JPanel implements ActionListener{
         venue.addLocation("Chocolate Lava Cave", "chocolateCave.png", width/2, 100);
         venue.addLocation("Marshmallow Stonehenge", "marshmallowRocks.png", width - 75, height/2 + 75);
         venue.addLocation("Ice Cream Cone Castle", "coneCastle.png", width/2, height);
-
-        // write text in correct spot according to coordinates
-        for(Location location : venue.getLocations()){
-            if(location.getY() > height / 2){
-                location.setTextTop(true);
-            }
-        }
     }
 
     /**

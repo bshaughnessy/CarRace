@@ -14,8 +14,10 @@ public class Window extends JFrame{
     }
 
     public void makeWindow(){
+        // set title
+        setTitle("The Candy Land Racing Game");
+      
         //items
-
         JPanel mainPanel = new JPanel(new BorderLayout());
         JPanel scoreBoard = new JPanel();
         scoreArea = new JTextArea();
@@ -33,18 +35,27 @@ public class Window extends JFrame{
         this.add(mainPanel);
 
         Dimension d = new Dimension(screenWidth / 4, screenHeight);
+        
+        // create title
+        Border border = BorderFactory.createLineBorder(Color.BLACK);
+        JLabel titleLabel = new JLabel("Candy Land");
+        titleLabel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        titleLabel.setOpaque(true);
+        titleLabel.setBackground(Color.white);
 
         //visual purposes only!
         mainPanel.setBackground(Color.black);
-        gamePanel.setBackground(Color.LIGHT_GRAY);
+        gamePanel.setBackground(new Color(198, 172, 127));
+        scoreBoard.add(titleLabel);
         scoreBoard.add(scoreArea);
+        
 
-        scoreArea.setText("First please enter your name. Then to start the game you can either make the cars move one leg of the race at a time or you can have the cars simulate the entire race. To start the simulation press one of the two buttons. If you press the move one leg button you will need to press it again after the cars have all finished the leg.");
+        scoreArea.setText("First please enter your name.\n\nThen to start the game you can either make the cars move one leg of the race at a time or you can have the cars simulate the entire race.\n\nTo start the simulation press one of the two buttons. If you press the move one leg button you will need to press it again after the cars have all finished the leg.");
         scoreArea.setLineWrap(true);
         scoreArea.setWrapStyleWord(true);
         scoreArea.setEditable(false);
+        
         // add border and padding around text
-        Border border = BorderFactory.createLineBorder(Color.BLACK);
         scoreArea.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         
         Container c = getContentPane();
